@@ -45,22 +45,70 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ALTNode.cs" />
+    <Compile Include="ALTAtom.cs" />
+    <Compile Include="ExecutionException.cs" />
+    <Compile Include="ASTLeaf.cs" />
+    <Compile Include="LangBool.cs" />
+    <Compile Include="LangColor.cs" />
+    <Compile Include="LangFunction.cs" />
+    <Compile Include="LangLexer.cs" />
+    <Compile Include="LangList.cs" />
+    <Compile Include="LangNone.cs" />
+    <Compile Include="LangNumber.cs" />
+    <Compile Include="ASTOperations.cs" />
+    <Compile Include="LangTuple.cs" />
+    <Compile Include="NameDomain.cs" />
+    <Compile Include="OperatorsData.cs" />
+    <Compile Include="ALTGroup.cs" />
+    <Compile Include="Dot.cs" />
+    <Compile Include="ASTNode.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GridSetupCode.cs" />
+    <Compile Include="Grid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Grid.Designer.cs">
+      <DependentUpon>Grid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LangValue.cs" />
+    <Compile Include="Line.cs" />
+    <Compile Include="LineSegment.cs" />
+    <Compile Include="ParsingException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RulesLangParser.cs" />
+    <Compile Include="RulesProgram.cs" />
+    <Compile Include="SmartCanvas.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SmartCanvas.Designer.cs">
+      <DependentUpon>SmartCanvas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LexToken.cs" />
+    <Compile Include="ALTOperator.cs" />
+    <Compile Include="Vector.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Grid.resx">
+      <DependentUpon>Grid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -74,6 +122,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stdlib.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
