@@ -12,19 +12,30 @@ namespace PuzzleGame
 
         public ALTGroup Group { get; set; }
 
+        public LexToken Token { get; protected set; }
+
+        public TokenPosition Position { get { return Token.Position; } }
+
         public abstract string ToString(int offset);
+
+        public bool IsLeaf()
+        {
+            return this is ASTLeaf;
+        }
+
+        public bool IsLeaf(TokenType type)
+        {
+            return this is ASTLeaf && (this as ASTLeaf).Value.Type == type;
+        }
 
         public bool IsNameLeaf()
         {
-            return this is ASTLeaf && (this as ASTLeaf).Value.Type == "Name";
+            return IsLeaf(TokenType.Name);
         }
 
-        internal bool IsSingleCall()
+        public bool IsSpaceLeaf()
         {
-            if (!(this is ASTOperations))
-                return false;
-            var op = this as ASTOperations;
-            return op.Operands.Count == 2 && op.Operators[1] == ".";
+            return IsLeaf(TokenType.Space);
         }
     }
 }

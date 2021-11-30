@@ -47,19 +47,27 @@
   <ItemGroup>
     <Compile Include="ALTNode.cs" />
     <Compile Include="ALTAtom.cs" />
+    <Compile Include="ASTBinary.cs" />
+    <Compile Include="ASTLambda.cs" />
+    <Compile Include="ASTUnary.cs" />
+    <Compile Include="CharacterStream.cs" />
     <Compile Include="ExecutionException.cs" />
     <Compile Include="ASTLeaf.cs" />
     <Compile Include="LangBool.cs" />
     <Compile Include="LangColor.cs" />
     <Compile Include="LangFunction.cs" />
-    <Compile Include="LangLexer.cs" />
+    <Compile Include="OperatorPrototype.cs" />
+    <Compile Include="ASTSeq.cs" />
+    <Compile Include="ASTTernary.cs" />
+    <Compile Include="RulesLangLexer.cs" />
     <Compile Include="LangList.cs" />
     <Compile Include="LangNone.cs" />
     <Compile Include="LangNumber.cs" />
-    <Compile Include="ASTOperations.cs" />
+    <Compile Include="LangSelectSet.cs" />
+    <Compile Include="LangStringsSet.cs" />
     <Compile Include="LangTuple.cs" />
     <Compile Include="NameDomain.cs" />
-    <Compile Include="OperatorsData.cs" />
+    <Compile Include="Operators.cs" />
     <Compile Include="ALTGroup.cs" />
     <Compile Include="Dot.cs" />
     <Compile Include="ASTNode.cs" />
@@ -83,6 +91,11 @@
     <Compile Include="ParsingException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LangFunctionSet.cs" />
+    <Compile Include="LangProductSet.cs" />
+    <Compile Include="LangSet.cs" />
+    <Compile Include="LangQQSet.cs" />
+    <Compile Include="LangUnionSet.cs" />
     <Compile Include="RulesLangParser.cs" />
     <Compile Include="RulesProgram.cs" />
     <Compile Include="SmartCanvas.cs">
@@ -93,12 +106,15 @@
     </Compile>
     <Compile Include="LexToken.cs" />
     <Compile Include="ALTOperator.cs" />
+    <Compile Include="TokenPosition.cs" />
     <Compile Include="Vector.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Grid.resx">
       <DependentUpon>Grid.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

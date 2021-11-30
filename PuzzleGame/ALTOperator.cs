@@ -9,33 +9,25 @@ namespace PuzzleGame
     public class ALTOperator : ALTNode
     {
         public string Operator { get; set; }
+        public OperatorPrototype Prototype { get; set; }
         public ALTGroup Data { get; set; }
 
-        public ALTOperator(string op, ALTGroup data =null)
+        public ALTOperator(LexToken token, string op, ALTGroup data = null)
         {
+            Token = token;
             Operator = op;
+            Prototype = Operators.GetPrototype(op);
             Data = data;
-        }
-
-        public bool IsUnary
-        {
-            get
-            {
-                return OperatorsData.Unary.Contains(Operator);
-            }
-        }
-
-        public bool IsTernary
-        {
-            get
-            {
-                return Operator == "ifelse";
-            }
         }
 
         public override string ToString()
         {
             return Operator;
+        }
+
+        public override ASTNode ToAST()
+        {
+            throw new NotImplementedException(); //should not go here ever
         }
     }
 }

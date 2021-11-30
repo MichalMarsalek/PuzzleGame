@@ -10,15 +10,14 @@ namespace PuzzleGame
     {
         public string Type { get; protected set; }
         public List<ALTNode> Nodes { get; protected set; }
+        public int Precedence { get; protected set; }
 
-        public ALTGroup(string end)
+        public ALTGroup(LexToken token, string end, int precedence = -2)
         {
+            Token = token;
             Type = end;
             Nodes = new List<ALTNode>();
-        }
-
-        public ALTGroup()
-        {
+            Precedence = precedence;
         }
 
         public override string ToString()
@@ -26,132 +25,247 @@ namespace PuzzleGame
             return $"Group[{Type}](\n" + String.Join(", ", Nodes.Select(i => i.ToString())) + "\n)";
         }
 
-        public ASTNode ToAST()
+        public void ResolveOperators() //adds empty operators, removes spaces and sets precedence
         {
-            return ToAST(Nodes);
+            var temp = new List<ALTNode>();
+            for(int i = 0; i < Nodes.Count; i++)
+            {
+                bool prevIsSpace = i > 0 && (Nodes[i - 1] is ALTAtom) && (Nodes[i - 1] as ALTAtom).LexToken.Type == TokenType.Space;
+                if (i > 0 && !(Nodes[i-1] is ALTOperator) && !prevIsSpace && Nodes[i] is ALTGroup && (Nodes[i] as ALTGroup).Type == ")")
+                {
+                    temp.Add(new ALTOperator(Nodes[i].Token, "§priorityEmpty§"));
+                }
+                temp.Add(Nodes[i]);
+            }
+            temp = temp.Where(i => !(i is ALTAtom) || (i as ALTAtom).LexToken.Type != TokenType.Space).ToList();
+            Nodes.Clear();
+            for (int i = 0; i < temp.Count; i++)
+            {
+                if (i > 0 && !(temp[i - 1] is ALTOperator) && !(temp[i] is ALTOperator))
+                {
+                    Nodes.Add(new ALTOperator(temp[i].Token, "§empty§"));
+                }
+                Nodes.Add(temp[i]);
+            }
+            if(Nodes.Count > 0 && (Nodes[0] is ALTOperator) && (Nodes[0] as ALTOperator).Operator == "§NL§")
+            {
+                Nodes.RemoveAt(0);
+            }
+            if (Nodes.Count > 0 && (Nodes.Last() is ALTOperator) && (Nodes.Last() as ALTOperator).Operator == "§NL§")
+            {
+                Nodes.RemoveAt(Nodes.Count-1);
+            }
+            ResolvePrecedence();
         }
 
-        private void FillCall(Stack<ALTNode> nodes) {
-            if(nodes.Count >= 1)
+        private void ResolvePrecedence() //finds and stores the minimum precedence present
+        {
+            try
             {
-                ALTNode node = nodes.Peek();
-                if(!(node is ALTOperator) )
-                {
-                    nodes.Push(new ALTOperator("call"));
-                }
+                Precedence = Nodes.Where(i => i is ALTOperator).Min(i => (i as ALTOperator).Prototype.Precedence);
+            }
+            catch
+            {
+                
             }
         }
 
-        private bool PrecedenceDrops(ALTOperator current, Stack<ALTOperator> operators)
+        public ALTGroup SplitAtPrecedence(int prec)
         {
-            if (operators.Count == 0)
-                return false;
-            string op1 = operators.Peek().Operator;
-            string op2 = current.Operator;
-            return OperatorsData.Precedence[op2] < OperatorsData.Precedence[op1];
-        }
-
-        private ASTNode ToAST(List<ALTNode> _nodes)
-        {
-            Stack<ASTNode> operands = new Stack<ASTNode>();
-            Stack<ALTOperator> operators = new Stack<ALTOperator>();
-            var nodes = new Stack<ALTNode>(_nodes.AsEnumerable().Reverse());
-            bool lastOp = false;
-            while (nodes.Any())
+            ALTGroup res = new ALTGroup(Token, Type, prec);
+            ALTGroup temp = new ALTGroup(Token, prec.ToString(), prec+1);
+            foreach(ALTNode node in Nodes)
             {
-                ALTNode node = nodes.Pop();
-                if (node is ALTOperator)
+                if(node is ALTOperator && (node as ALTOperator).Prototype.Precedence == prec)
                 {
-                    if (!lastOp && PrecedenceDrops(node as ALTOperator, operators))
+                    if (temp.Nodes.Count == 1 && !(temp.Nodes[0] is ALTOperator))
                     {
-                        ProcessOperator(operands, operators);
-                        nodes.Push(node);
-                        continue;
+                        res.Nodes.Add(temp.Nodes[0]);
                     }
-                    operators.Push(node as ALTOperator);
-                    lastOp = true;
+                    else
+                    {
+                        res.Nodes.Add(temp);
+                    }
+                    temp = new ALTGroup(node.Token, prec.ToString(), prec+1);
+                    res.Nodes.Add(node);
                 }
-                else {
-                    FillCall(nodes);
-                    if (node is ALTAtom)
-                    {
-                        operands.Push(new ASTLeaf((node as ALTAtom).LexToken));
-
-                    }
-                    else if (node is ALTGroup)
-                    {
-                        operands.Push(ProcessInnerGroup(node as ALTGroup));
-                    }
-                    lastOp = false;
+                else
+                {
+                    temp.Nodes.Add(node);
                 }
             }
-            while (operators.Any())
+            if (temp.Nodes.Count == 1 && !(temp.Nodes[0] is ALTOperator))
             {
-                ProcessOperator(operands, operators);
+                res.Nodes.Add(temp.Nodes[0]);
             }
-            if (operands.Count == 1)
+            else
             {
-                return operands.Pop();
+                res.Nodes.Add(temp);
             }
-            throw new ParsingException("", -1, "leftover operands - unable to build AST"); //TODO replace "" and -1
+            return res;
         }
 
-        private ASTNode ProcessInnerGroup(ALTGroup inner)
+        public override ASTNode ToAST() //wraps contents in list if needed
         {
-            if (inner.Type == "]")
+            if (Type == "]")
             {
-                if(inner.Nodes.Count == 0)
+                if(Nodes.Count == 0)
                 {
-                    return new ASTLeaf(new LexToken("Name", "[]",-1));
+                    return new ASTSeq(Token, SeqType.List, new List<ASTNode>());
                 }
-                var innerAST = inner.ToAST();
-                string listOp = "ulist1";
-                if (inner.Nodes.Count > 1 && inner.Nodes[1] is ALTOperator && (inner.Nodes[1] as ALTOperator).Operator == ",")
-                    listOp = "ulistreplace";
-
-                return new ASTOperations(new List<string>() { listOp }, new List<ASTNode>() { innerAST });
+                bool singleParen = Nodes.Count == 1 && Nodes[0] is ALTGroup && (Nodes[0] as ALTGroup).Type == ")";
+                ASTNode inner = ToInnerAST();
+                if(inner is ASTSeq && (inner as ASTSeq).Type == SeqType.Tuple && !singleParen)
+                {
+                    if((inner as ASTSeq).Items.Any(i => i.IsSpaceLeaf()))
+                    {
+                        throw new ParsingException(inner.Token, $"Operator [] does not accept empty arguments."); //TODO token, position
+                    }
+                    return new ASTSeq(Token, SeqType.List, (inner as ASTSeq).Items);
+                }
+                return new ASTSeq(Token, SeqType.List, new List<ASTNode>() { inner });
             }
-            return inner.ToAST();
-
+            return ToInnerAST();
         }
 
-        private void ProcessOperator(Stack<ASTNode> operands, Stack<ALTOperator> operators)
+        public ASTNode ToInnerAST() //converts contents to AST, creates lambda function if needed
         {
-            List<ASTNode> args = new List<ASTNode>();
-            List<string> ops = new List<string>();
-            int prec = OperatorsData.Precedence[operators.Peek().Operator];
-            args.Add(operands.Pop());
-            while (operators.Any())
+            ResolvePrecedence();
+            if (Nodes.Count == 0)
             {
-                ALTOperator op = operators.Peek();
-                if(OperatorsData.Precedence[op.Operator] != prec)
-                {
-                    ops.Insert(0, "");
-                    operands.Push(new ASTOperations(ops, args));
-                    return;
-                }
-                operators.Pop();
-                if (op.IsTernary)
-                {
-                    args.Insert(0, op.Data.ToAST());
-                    args.Insert(0, operands.Pop());
-                    ops.Add("if");
-                    ops.Add("else");
-                    ops.Insert(0, "");
-                    operands.Push(new ASTOperations(ops, args));
-                    return;
-                }
-                if (op.IsUnary)
-                {
-                    ops.Insert(0, op.Operator);
-                    operands.Push(new ASTOperations(ops, args));
-                    return;
-                }
-                ops.Insert(0, op.Operator);
-                args.Insert(0, operands.Pop());
+                return new ASTLeaf(new LexToken(TokenType.Space, "", Token.Position));
             }
-            ops.Insert(0, "");
-            operands.Push(new ASTOperations(ops, args));
+            if (Precedence >= Operators.LambdaPrec && (new string[] { "EOF", ")","2", "1", "0", "-1", "-2"}.Contains(Type)))
+            {
+                return ToLambdaAST();
+            }
+            return ToSimpleAST();
+        }
+
+        public ASTNode ToLambdaAST()
+        {
+            bool leftSlice = Nodes[0] is ALTOperator && (Nodes[0] as ALTOperator).Prototype.Arity != OperatorArity.Prefix;
+            bool rightSlice = Nodes.Last() is ALTOperator && (Nodes.Last() as ALTOperator).Prototype.Arity != OperatorArity.Postfix;
+            bool it = Nodes.Any(i => i is ALTAtom && (i as ALTAtom).LexToken.Value == "it");
+            int uid = Operators.UID;
+            List<string> args = new List<string>();
+            if (leftSlice)
+            {
+                Nodes.Insert(0, new ALTAtom(new LexToken(TokenType.Name, $"§left{uid}§", Token.Position))); //TODO position + uid of slice
+                args.Add($"§left{uid}§");
+            }
+            if (it){
+                for (int i = 0; i < Nodes.Count; i++)
+                {
+                    if (Nodes[i] is ALTAtom && (Nodes[i] as ALTAtom).LexToken.Value == "it")
+                    {
+                        Nodes[i] = new ALTAtom(new LexToken(TokenType.Name, $"§it{uid}§", (Nodes[i] as ALTAtom).LexToken.Position));
+                    }
+                }
+                args.Add($"§it{uid}§");
+            }
+            if (rightSlice) { 
+                Nodes.Add(new ALTAtom(new LexToken(TokenType.Name, $"§right{uid}§", Token.Position))); //TODO position + uid of slice
+                args.Add($"§right{uid}§");
+            }
+            if(args.Count == 0)
+                return ToSimpleAST();
+            return new ASTLambda(Token, args, ToSimpleAST());
+        }
+
+        public ASTNode ToSimpleAST() { //converts contents to AST, doesn't create lambda functions
+            ResolvePrecedence();
+            var grouped = SplitAtPrecedence(Precedence);
+            if (grouped.Nodes.Count == 1)
+                return grouped.Nodes[0].ToAST();
+            var operators = Enumerable.Range(0, grouped.Nodes.Count / 2).Select(i => grouped.Nodes[2 * i+1] as ALTOperator).ToList<ALTOperator>();
+            var operands = Enumerable.Range(0, grouped.Nodes.Count / 2 + 1).Select(i => grouped.Nodes[2 * i]).ToList();
+            if(grouped.Nodes.Count == 1)
+                return grouped.Nodes[0].ToAST();
+            if (operators[0].Prototype.Arity == OperatorArity.Group)
+                return ToGroupAST(operands, operators);
+            if (operators[0].Prototype.Arity == OperatorArity.Prefix)
+                return ToUnaryAST(operands[1], operators[0]);
+            if (operators[0].Prototype.Arity == OperatorArity.Postfix)
+                return ToUnaryAST(operands[0], operators[0]);
+            if (operators[0].Prototype.Arity == OperatorArity.Infix)
+                return ToBinaryAST(operands, operators);
+            if (operators[0].Prototype.Arity == OperatorArity.Ternary)
+                return ToTernaryAST(operands, operators);
+            return null;
+        }
+
+        public ASTNode ToGroupAST(List<ALTNode> operands, List<ALTOperator> operators)
+        {
+            var unmachingOps = operators.Where(i => i.Operator != operators[0].Operator);
+            if (unmachingOps.Any())
+            {
+                throw new ParsingException(unmachingOps.First().Token, "Group operators must all be the same."); //TODO position
+            }
+            SeqType t = new Dictionary<string, SeqType>() { { ",", SeqType.Tuple }, { "×", SeqType.Product }, { "§NL§", SeqType.Lines } }[operators[0].Operator];
+            return new ASTSeq(operands.First().Token, t, operands.Select(i => i.ToAST()).ToList());
+        }
+
+        public ASTNode ToUnaryAST(ALTNode operand, ALTOperator op)
+        {
+            return new ASTUnary(op.Token, operand.ToAST(), op.Operator);
+        }
+
+        public ASTNode ToTernaryAST(List<ALTNode> operands, List<ALTOperator> operators)
+        {
+            ASTNode result;
+            OperatorAssociativity assoc = operators[0].Prototype.Associativity;
+            if (assoc == OperatorAssociativity.Left)
+            {
+                result = new ASTTernary(operators[0].Token, operands[0].ToAST(), operators[0].Data.ToAST(), operands[1].ToAST(), operators[0].Operator);
+                for (int i = 1; i < operators.Count; i++)
+                {
+                    result = new ASTTernary(operators[i].Token, result, operators[i].Data.ToAST(), operands[i + 1].ToAST(), operators[i].Operator);
+                }
+                return result;
+            }
+            int n = operands.Count;
+            result = new ASTTernary(operators[n - 2].Token, operands[n - 2].ToAST(), operators[n - 2].Data.ToAST(), operands[n - 1].ToAST(), operators[n - 2].Operator);
+            for (int i = n - 3; i >= 0; i--)
+            {
+                result = new ASTTernary(operators[i].Token, operands[i].ToAST(), operators[i].Data.ToAST(), result, operators[i].Operator);
+            }
+            return result;
+        }
+
+        public ASTNode ToBinaryAST(List<ALTNode> operands, List<ALTOperator> operators)
+        {
+            OperatorAssociativity assoc = operators[0].Prototype.Associativity;
+            if (assoc == OperatorAssociativity.Chain)
+            {
+                if(operators.Count > 1)
+                {
+                    var inner = new ASTBinary(operators[0].Token, operands[0].ToAST(), operands[1].ToAST(), operators[0].Operator);
+                    var rest = ToBinaryAST(operands.Skip(1).ToList(), operators.Skip(1).ToList());
+                    return new ASTBinary(rest.Token, inner, rest, "and");
+                }
+            }
+            if (assoc == OperatorAssociativity.Forbidden && operators.Count > 1)
+            {
+                throw new ParsingException(operators[1].Token, "Only 2 operands supported."); //TODO position
+            }
+            ASTNode result;
+            if (assoc == OperatorAssociativity.Left)
+            {
+                result = new ASTBinary(operators[0].Token, operands[0].ToAST(), operands[1].ToAST(), operators[0].Operator);
+                for(int i = 1; i < operators.Count; i++)
+                {
+                    result = new ASTBinary(operators[i].Token, result, operands[i + 1].ToAST(), operators[i].Operator);
+                }
+                return result;
+            }
+            int n = operands.Count;
+            result = new ASTBinary(operators[n-2].Token, operands[n-2].ToAST(), operands[n-1].ToAST(), operators[n-2].Operator);
+            for (int i = n-3; i >= 0; i--)
+            {
+                result = new ASTBinary(operators[i].Token, operands[i].ToAST(), result, operators[i].Operator);
+            }
+            return result;
         }
 
     }

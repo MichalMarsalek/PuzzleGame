@@ -20,8 +20,9 @@ namespace PuzzleGame
 
         public RulesProgram(string code)
         {
-            var parser = new RulesLangParser();
-            Expressions = parser.Parse(code);
+            throw new Exception();/*
+            var parser = new RulesLangParser(code);
+            Expressions = parser.GetGroups();*/
         }
 
         public List<LangValue> Run(NameDomain context = null)

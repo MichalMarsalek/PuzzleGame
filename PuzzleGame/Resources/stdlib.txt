@@ -1,15 +1,292 @@
-first := 0
-second := 1
-last(seq) := seq.(length seq - 1)
-startAt(line,x,y) := lines.0.coordinates = x,y
-endAt(line,x,y) := lines.last = x,y
-startWith(line, col) := line.0.color = col
-endWith(line, col) := line.0.color = col
-primes := 2,3,5,7,11,13,17,19,23,29
+﻿$$$$ META (sets) $$$$
+Sets := §Sets§
+Sets:
+ QQ := §Rationals§
+ Strings := §Strings§
+ Lists(Type) := §Lists§
+ ZZ := QQ.select( mod 1 = 0)
+ NN := ZZ.select(>= 0)
 
-line.startAt(3,5)
 
-Call(Call(startAt, line), (3,5))
+Sets × ZZ.select(>= 2):
+	set ^ exp := §setPower§
+Any × Sets -> Bools:
+	el in set := §inSet§
+	el notin set := not el in set
+Sets^2 -> Sets:
+	A and B := §andSet§
+	A or B := §orSet§
+Sets × (Any -> Bools) -> Sets:
+	A.select f := §selectSet§
+Sets -> Sets
+Lists(base) := §listsSet§
 
-norm2 vec := sqrt(vec.X^2 + vec.Y^2)
-norm2(x,y) := sqrt(x^2 + y^2)
+
+
+
+
+$$$$ BASIC DEFINITIONS, FUNCTIONS, SETS, etc. $$$$
+Strings -> Any:
+ error text := §error§
+red := "red"
+blue := "blue"
+green := "green" $ TODO other colors
+
+true := 1>0
+false := 1<0
+
+Bools -> Bools:
+	not a := false if a else true
+
+Bools^2 -> Bools:
+	a or b  := true if a else true  if b else false
+	a and b := not(not a or not b)
+
+Lists(Any) -> NN:
+	length seq := 0 if seq = [] else 1 + seq.tail
+	len		   := length
+
+Lists(Any)^2 -> Bools:
+	A = B := §listEquivality§
+
+ZZ^2 -> Lists(ZZ):
+	low ... high := [] if high < low else [low] ++ ((low+1)...high)
+	low ..< high := low ... (high-1)
+
+Lists(Any) -> Lists(Any):
+	tail seq := seq.(1...<seq.len)
+Lists(Any) -> Any
+	head seq := seq.0
+
+Lists(Any) × (Any -> Any2) -> Lists(Any2):
+	seq.map f := [] if seq = [] else [seq.0.f] ++ seq.tail.map.f
+
+Lists(Any) × (Any^2 -> Any) -> Any:
+	seq.fold f := (error "empty list" if seq = []		else
+				   seq.0			  if seq.len = 1	else
+				   f(seq.0, seq.tail.fold f))
+
+Lists(Any) × (Any^2 -> Any) × Any -> Any:
+	seq.foldn(f, neutral) := fold([neutral] ++ seq, f)
+Lists(Any) × (Any -> Bools) -> Lists(Any):
+	seq.select f := seq.(seq.map f)
+
+Lists(Any) × Lists(Any2) -> Lists(Any × Any2):
+	zip a b := ([] if a = [] or b = [] else
+				[(a.0, b.0)] + zip(a.tail, b.tail))
+
+Lists(QQ) -> Any:
+	sum seq := foldn(seq, +, 0)
+	product seq := foldn(seq, *, 1)
+
+QQ^2 -> QQ:
+	max2(a,b) := a if a > b else b
+	min2(a,b) := a if a < b else b
+
+Lists(QQ):
+	max seq := seq.fold max2
+	min seq := seq.fold min2
+
+Vectors := QQ^2
+Matrices := Vectors^2
+unitMatrix := ((1,0),(0,1))
+
+Colors := [red, green, blue, yellow]
+
+Lines := Colors × Lists(Vectors)
+
+Matrices -> QQ:
+det M := M.0.0 M1.1 - M.1.0 M.0.1
+
+Matrices -> Matrices:
+T   M := (M.0.0, M.1.0), (M.0.1, M.1.1)
+
+Matrices -> Matrices:
+inv M := (-M.0.0, M.1.0), (M.0.1, -M.1.1)
+
+Matrices × ZZ -> Matrices:
+M ^ k := (inv M)^-k if k < 0 else M.foldn(@, unitMatrix)
+
+Any × Lists(Any) -> Bools:
+	el in seq := false if seq = [] else el = seq.0 or el in seq.tail
+
+Any × Any × NN × (Any^2 -> Any) -> Any:
+binaryIteration(neutral, a, k, op) := 0 $TODO
+
+$$$$	Multivalue magic	$$$$
+Lists(Any) -> Any:
+	all seq := §allMagic§
+	some seq := §someMagic§
+
+$$$$ Level based values $$$$
+isTriangularGrid := true / false
+backgroundColor := red
+systemTime := 23, 55, 21
+systemDate := 2021, 9, 10
+
+$$$$ ARITHMETIC OPERATORS $$$$
+QQ -> QQ:
+	a% := a / 100
+
+QQ -> QQ:
+	-a := §negateQQ§
+	abs a := a if a > 0 else -a
+QQ^2 -> QQ:
+	a + b := §addQQ§
+	a - b := a + -b
+	a * b := §mulQQ§
+	a .uncheckedDivision b := §divQQ§
+	a / b := error "zero division" if b = 0 else a .uncheckedDivision b
+	a .uncheckedMod b := §modQQ§
+	a mod b := error "zero division" if b = 0 else a .uncheckedMod b
+	a div b := (a - a mod b) / b
+QQ^2 -> Bools:
+	a <= b := §atMostQQ§
+	a >= b := b <= a
+	a = b  := a <= b <= a
+	a != b := not a = b
+	a < b  := a <= b != a
+	a > b  := b < a
+QQ × ZZ:
+	a ^ k := 1/a^-k if k < 0 else binaryIteration(1, a, k, *)
+
+Vector -> Vector:
+	-a := -a.0, -a.1
+Vector^2 -> QQ:
+	a + b := a.0+b.0, a.1+b.1
+	a @ b := a.0*b.0 + a.1*b.1
+QQ × Vector -> Vector:
+	a * v := a * v.0, a * v.1
+Vector × QQ -> Vector:
+	v * a := a * v
+	v / a := 1/a * v
+Vector × Matrix -> Vector:
+	v @ M := v.0 * M.0, v.1 * M.1
+
+Vector -> QQ:
+	norm1 v := abs v.0 + abs v.1
+	norm2 v := v.0^2 + v.1^2
+	normTriangle v := min[norm1 v, norm(v.0, -v.0-v.1), norm(v.1, -v.0-v.1)]
+
+Vector^2 -> QQ:
+	dist1(u,v) := norm1(u-v)
+	dist2(u,v) := norm2(u-v)
+	distTriangle(u,v) := normTriangle(u-v)
+	dist(u,v) := (distTriangle if isTriangularGrid else dis1)(u,v)		$ this is correct distance along edges in both square and triangular grid
+	$ TODO id love for the above to be equivalent to dist := distTriangle if isTriangularGrid else dist1
+
+
+$$$$ ANGLES $$$$
+Angles := ZZ × QQ
+baseAngleDeg := 30 if isTriangularGrid else 45
+baseAngle    := (1,0)
+
+
+Angles -> Angles:
+	-β := -β.0, -β.1
+Angles^2 -> Angles:
+	α + β := 0 $TODO
+Angles × ZZ -> Angles:
+	β * k :=  -β * k if k < 0 else binaryIteration((1,0), β, k, +)
+ZZ × Angles -> Angles:
+	k * β * k := β * k
+Angles^2 -> Angles:
+	α - β := α + -β
+	
+baseAngleDeg := 30 if isTriangularGrid else 45
+baseAngle    := 0 $TODO
+ZZ -> Angles:
+	deg° := error "not able to represent this angle" if deg mod baseAngleDeg != 0 else
+	        deg / baseAngleDeg * baseAngle
+
+$$ Square root approximations and primeness $$
+QQ^3 -> QQ:
+ sqrt0(n, xk, e) := (xkp1 := (xk + n/xk)/2
+					 xkp1 if abs(xkp1-xk) < e else sqrt0(n, xkp1, e)
+ )
+
+QQ^2 -> QQ:
+ sqrt(n, e) := error "negative numbers don't have roots in QQ" if xk < 0 else
+              0 if xk = 0 else
+			  sqrt0(n, n, e)
+
+NN -> NN:
+ isqrt n := sqrt0(n, 1) div 1
+NN -> Bools:
+ isPrime n := (2 ..< isqrt n).all(n / it := 0)
+
+Sets:
+ Primes := NN.select isPrime
+
+objective rules := all rules
+
+$TODO
+
+
+$$$$
+TOKENS
+There are several different tokens present in the source code:
+Names						- words consisting of αnumeric characters or _ and not starting with a digit
+Decimal number literals		- words consisting of numeric values, optionally containing a dot somewhere in the middle
+It							- it - keyword for anonymous functions
+Colon						- :  - Marker for Function signature definition
+String literal				- " seprated string supporting escaping sequences
+Operator					- buildin or extended operator
+Brackets					- there are 3 pairs of brackets ( with ), [ with ], if with else
+
+OPERATORS
+There are several operators in the language.
+Most of them can be overwritten and even extended (by a sequence of non-αnumeric symbols) to form custom operators.
+If an operator doesn't support ovewrites, all its behaviour is defined by the language  interpreter itself.
+Custom operators share all properties of the base operator. Following table sumamarises the operators and their properties.
+the special operator "empty" is applied when there are two values right next to each other without any operator.
+In special case, when there is no space present and the right value is in parethesis - like f(x), priorityEmpty is applied instead.
+
+Precedence		Operators			Arity			Associativity		Overwritable		Extendable		Meaning
+15				° %					Postfix unary	-					Yes					Yes						
+14				- #					Prefix unary	-					Yes					Yes						
+13				. priorityEmpty		Infix binary	Left				Yes					Yes				Inverse function call, inverse indexing
+12				empty				Infix binary	Right				No					No				Function call, indexing
+11				^					Infix binary	Right				Yes					Yes				Exponentiation
+10				@ * /				Infix binary	Left				Yes					Yes				Multiplication, division
+9				.. --				Infix binary	Left				Yes					Yes				Range
+8				+ -					Infix binary	Left				Yes					Yes				Addition, substraction
+7				\ & |				Infix binary	Left				Yes					Yes						
+6				= != > <			Infix binary	Chain				Yes					Yes				Comparison
+6				in notin			Infix binary	Chain				Yes					No				Membership
+5				not					Prefix unary	-					Yes					No				Logical negation						
+4				and					Infix binary	Left				Yes					Yes				Logical and
+3				or					Infix binary	Left				Yes					Yes				Logical or
+2				if-else				Ternary			Left				No					No				Ternary logic
+1				, ×					Group			-					No					No						
+0				-> :=				Infix binary	Forbidden			No					No				Function space definition, Naming
+0				:					Postfix unary	Forbidden			No					No				Function domain definition
+
+ARRITIES
+Most operators are binary meaning they take two arguments and the operator is applied in the infix notation, like 1+2.
+Unary operators (single argument) can be applied either in postfix or prefix notation based on the table above.
+Ternary operators consist of two parts that are used to separate the three arguments.
+The middle argument is evaluated first and then the whole expression is treated as a binary operator on the left and right arguments.
+Group arity operators take n arguments separated by n-1 copies of the operator.
+
+ASSOCIATIVITIES
+When several binary operators of the same precedence are forming an expression they are evaluated left to right or right to left based on the table above.
+Operators with precedence 6 are intended to return a Boolean value and can be chained. For example, the following two are equivalent:
+3 <= x < 10
+3 <= x and x < 10
+
+ANONYMOUS FUNCTIONS
+There are three ways to create anonymous functions.
+1. Partial application
+2. Operator slicing
+	If an expression (inside a bracket or surrounded by 1 or 0 precedence operator) starts with a binary operator that is not a prefix unary operator
+	or if it ends with a binary operator that is not a postfix unary operator a function is created. This function accepts 1 or 2 arguments that are substituted at the start or end of the expression.
+3. It expression
+	If an expression contains the it keyword, a function is created. This function accepts a single argument that is substituted in place of the it keyword.
+
+For example, the following two are equivalent:
+sequence.map(+2)
+sequence.map(it+2)
+
+$$$$
+

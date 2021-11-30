@@ -51,7 +51,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(970, 323);
+            this.label2.Location = new System.Drawing.Point(971, 208);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 2;
@@ -73,15 +73,16 @@
             this.richTextBoxGridSetup.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.richTextBoxGridSetup.Location = new System.Drawing.Point(600, 42);
             this.richTextBoxGridSetup.Name = "richTextBoxGridSetup";
-            this.richTextBoxGridSetup.Size = new System.Drawing.Size(576, 264);
+            this.richTextBoxGridSetup.Size = new System.Drawing.Size(576, 163);
             this.richTextBoxGridSetup.TabIndex = 4;
             this.richTextBoxGridSetup.Text = "";
             // 
             // richTextBoxRules
             // 
-            this.richTextBoxRules.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxRules.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBoxRules.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.richTextBoxRules.Location = new System.Drawing.Point(600, 340);
+            this.richTextBoxRules.Location = new System.Drawing.Point(600, 224);
             this.richTextBoxRules.Name = "richTextBoxRules";
             this.richTextBoxRules.Size = new System.Drawing.Size(576, 182);
             this.richTextBoxRules.TabIndex = 5;
@@ -90,20 +91,20 @@
             // 
             // richTextBoxDebug
             // 
-            this.richTextBoxDebug.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.richTextBoxDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBoxDebug.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.richTextBoxDebug.Location = new System.Drawing.Point(600, 540);
+            this.richTextBoxDebug.Location = new System.Drawing.Point(600, 412);
             this.richTextBoxDebug.Name = "richTextBoxDebug";
-            this.richTextBoxDebug.Size = new System.Drawing.Size(576, 68);
+            this.richTextBoxDebug.Size = new System.Drawing.Size(576, 196);
             this.richTextBoxDebug.TabIndex = 5;
             this.richTextBoxDebug.Text = "";
             // 
             // grid
             // 
-            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.grid.BackColor = System.Drawing.Color.White;
             this.grid.Location = new System.Drawing.Point(1, -1);
             this.grid.Name = "grid";

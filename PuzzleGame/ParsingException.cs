@@ -8,17 +8,15 @@ namespace PuzzleGame
 {
     public class ParsingException : Exception
     {
-        public string Token { get; private set; }
-        public int Start { get; private set; }
+        public LexToken Token { get; private set; }
         public string Comment { get; private set; }
 
-        public ParsingException(string token, int start, string comment="")
+        public ParsingException(LexToken token, string comment="")
         {
             Token = token;
-            Start = start;
             Comment = comment;
         }
 
-        public override string Message => $"Unexpected token '{Token}' at position {Start}" + (Comment != "" ? ", " : "") + Comment;
+        public override string Message => $"Unexpected token '{Token.Value}' at {Token.Position}" + (Comment != "" ? ", " : "") + Comment;
     }
 }

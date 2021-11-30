@@ -36,6 +36,7 @@ namespace PuzzleGame
 
         public static LangFunction FromAST(NameDomain context, ASTNode left, ASTNode right)
         {
+            throw new NotImplementedException();/*
             List<string> argNames = null;
             if (left.IsNameLeaf())
             {
@@ -54,6 +55,7 @@ namespace PuzzleGame
                 throw new ExecutionException("Can only assign to constants or parametrized functions.");
             }
             return new LangFunction(context, argNames, right);
+            */
         }
 
         public LangFunction(NameDomain context, List<string> names, ASTNode value, List<LangValue> preset = null)

@@ -11,115 +11,163 @@ namespace PuzzleGame
     public class RulesLangParser
     {
         public string Code;
-        public LangLexer Lexer;
+        public RulesLangLexer Lexer;
         public readonly Dictionary<string, string> bracketMap =
-            new Dictionary<string, string>() { { "(", ")" }, { "[", "]" }, { "if", "else" } };
+            new Dictionary<string, string>() { { "(", ")" }, { "[", "]" }, { "if", "else" }, { "SOF", "EOF"} };
 
 
         public RulesLangParser(string code)
         {
             Code = code;
-            Lexer = new LangLexer();
+            Lexer = new RulesLangLexer();
         }
         public RulesLangParser()
         {
-            Lexer = new LangLexer();
+            Lexer = new RulesLangLexer();
         }
 
-        public List<ASTNode> Parse(string code)
+        public ASTNode Parse(string code)
         {
             Code = code;
             return Parse();
         }
-        public List<ASTNode> Parse()
+        public ASTNode Parse()
         {
-            return Code.Split('\n').Where(i => i != "").Select(i => ParseLine(i)).ToList();
+            return GetGroups().ToAST();
         }
 
-        private ASTNode ParseLine(string line)
+        //Removes comments, unnecesary spaces and checks that : is followed by a newline
+        private List<LexToken> CleanTokens(IEnumerable<LexToken> tokens)
         {
-            var tokens = ResolveBrackets(new Queue<LexToken>(Lexer.GetTokens(line))) as ALTGroup;
-            var res = tokens.ToAST();
-            return res;
-        }
+            List<LexToken> result = new List<LexToken>();
+            List<LexToken> toks1 = tokens.Where(i => i.Type != TokenType.Comment).ToList();
+            List<LexToken> toks2 = new List<LexToken>();
 
-        //Processes a bracket, returns true if it is (correct) closing one
-        private bool ProcessBracket(Queue<LexToken> tokens, LexToken token, ALTGroup result, string bracket)
-        {
-            if (bracketMap.ContainsKey(token.Value))
+            LexToken previousSpace = null;
+            LexToken previousNL = null;
+            int seenNLs = 0;
+            foreach (LexToken token in toks1)
             {
-                if(token.Value == "if" && result.Nodes.Count() == 0)
+                if(token.Type == TokenType.Space)
                 {
-                    throw new ParsingException(token.Value, token.Position, $"expected an operand");
+                    previousSpace = token;
                 }
-                result.Nodes.Add(ResolveBrackets(tokens, bracketMap[token.Value]));
-            }
-            else if (token.Value == bracket)
-            {
-                bool expectedOp = false;
-                expectedOp = bracket == "]" && result.Nodes.Any() && result.Nodes.Last() is ALTOperator;
-                expectedOp = expectedOp || bracket != "]" && (result.Nodes.Count() == 0 || result.Nodes.Last() is ALTOperator);
-                if (expectedOp){
-                    throw new ParsingException(token.Value, token.Position, $"expected an operand");
-                }
-                return true;
-            }
-            else
-            {
-                throw new ParsingException(token.Value, token.Position, $"expected bracket {bracket}");
-            }
-            return false;
-        }
-
-        public ALTNode ResolveBrackets(Queue<LexToken> tokens, string bracket = "EOL")
-        {
-            ALTGroup result = new ALTGroup(bracket);
-            while (tokens.Any())
-            {
-                LexToken token = tokens.Dequeue();
-                if(token.Type == "Bracket")
+                else if(token.Type == TokenType.NL)
                 {
-                    if (ProcessBracket(tokens, token, result, bracket))
+                    if (previousNL == null)
                     {
-                        if(bracket == "else")
-                        {
-                            return new ALTOperator("ifelse", result);
-                        }
-                        return result;
+                        previousNL = token;
                     }
+                    seenNLs++;
                 }
                 else
                 {
-                    if(token.Type == "Operator")
+                    if(seenNLs == 0 && previousSpace != null)
                     {
-                        if (result.Nodes.Count == 0 || result.Nodes.Last() is ALTOperator)
-                        {
-                            if (token.Value == "+" | token.Value == "-")
-                            {
-                                token.Value = "u" + token.Value;
-                                result.Nodes.Add(new ALTOperator(token.Value));
-                            }
-                            else
-                            {
-                                throw new ParsingException(token.Value, token.Position, $"not unary operator");
-                            }
-                        }
-                        else
-                        {
-                            result.Nodes.Add(new ALTOperator(token.Value));
-                        }
+                        toks2.Add(previousSpace);
                     }
-                    else
+                    else if (seenNLs == 1)
                     {
-                        result.Nodes.Add(new ALTAtom(token));
+                        toks2.Add(new LexToken(TokenType.NL, "\n", previousNL.Position));
                     }
-                }
-                if(token.Value == "EOL")
-                {
-                    throw new ParsingException("EOL", token.Position, $"expected bracket {bracket}");
+                    else if (seenNLs >= 2)
+                    {
+                        toks2.Add(new LexToken(TokenType.DoubleNL, "\n\n", previousNL.Position));
+                    }
+                    toks2.Add(token);
+                    seenNLs = 0;
+                    previousNL = null;
+                    previousSpace = null;
+                    continue;
                 }
             }
-            throw new ParsingException("EOL", -1, $"expected bracket {bracket}");
+            List<LexToken> toks3 = new List<LexToken>(); //removes a newline after else
+            for (int i = 0; i < toks2.Count; i++)
+            {
+                toks3.Add(toks2[i]);
+                if (i + 1 < toks2.Count && toks2[i].Value == "else" && toks2[i+1].Type == TokenType.NL)
+                {
+                    i++;
+                }
+            }
+            List<LexToken> toks4 = new List<LexToken>(); //replaces DoubleNL with NL, DoubleNL, NL so that lines can be split by NL
+            foreach(LexToken token in toks3)
+            {
+                if(token.Type == TokenType.DoubleNL)
+                {
+                    toks4.Add(new LexToken(TokenType.NL, "\n", token.Position));
+                    toks4.Add(token);
+                    toks4.Add(new LexToken(TokenType.NL, "\n", token.Position));
+                }
+                else
+                {
+                    toks4.Add(token);
+                }
+            }
+            for (int i = 1; i < toks4.Count; i++) //asserts : is followed by NL
+            {
+                if(toks4[i-1].Value == ":" && toks4[i].Type != TokenType.NL)
+                {
+                    throw new ParsingException(toks4[i], "Expected a newline.");
+                }
+            }
+            return toks4;
+        }
+
+        public ALTNode GetGroups()
+        {
+            var temp = GetGroups(CleanTokens(Lexer.GetTokens(Code)));
+            return temp;
+        }
+
+        private ALTNode GetGroups(List<LexToken> tokens)
+        {
+            return GetGroups(new Stack<LexToken>(tokens.AsEnumerable().Reverse()),
+                new LexToken(TokenType.Bracket, "SOF", new TokenPosition(0,0)), "EOF");
+        }
+
+        private ALTNode GetGroups(Stack<LexToken> tokens, LexToken init, string end)
+        {
+            ALTGroup result = new ALTGroup(init, end);
+            while (tokens.Any())
+            {
+                LexToken token = tokens.Pop();
+                if (token.Type == TokenType.Bracket)
+                {
+                    if(token.Value == end) //correct closing bracket
+                    {
+                        result.ResolveOperators();
+                        if (Operators.Ops.ContainsKey(end))
+                        {
+                            return new ALTOperator(token, end, result);
+                        }
+                        return result;
+                    }
+                    else if(bracketMap.ContainsValue(token.Value)) //wrong closing bracket
+                    {
+                        throw new ParsingException(token, $"Wrong closing bracket, expected {end}.");
+                    }
+                    else //opening bracket
+                    {
+                        result.Nodes.Add(GetGroups(tokens, token, bracketMap[token.Value]));
+                    }
+                }
+                else if(token.Type == TokenType.Operator)
+                {
+                    bool unaryMinus = result.Nodes.Count == 0 || result.Nodes.Last() is ALTOperator || (result.Nodes.Last() is ALTAtom && (result.Nodes.Last() as ALTAtom).LexToken.Type == TokenType.Space);
+                    unaryMinus = unaryMinus && token.Value == "-";
+                    result.Nodes.Add(new ALTOperator(token, (unaryMinus ? "u" : "") + token.Value));
+                }
+                else if(token.Type == TokenType.NL)
+                {
+                    result.Nodes.Add(new ALTOperator(token, "§NL§"));
+                }
+                else
+                {
+                    result.Nodes.Add(new ALTAtom(token));
+                }
+            }
+            throw new ParsingException(new LexToken(TokenType.Unexpected, "", new TokenPosition(0,0)), "something is very wrong");
         }
     }
 }

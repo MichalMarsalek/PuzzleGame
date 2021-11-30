@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame
 {
-    public abstract class ALTNode
+    public abstract class LangSet
     {
-        public abstract ASTNode ToAST();
-        public LexToken Token { get; protected set; }
+        public abstract bool Contains(LangValue value);
     }
 }
