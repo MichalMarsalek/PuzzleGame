@@ -106,15 +106,36 @@ namespace PuzzleGame
         public static Color FillColor(Colors color)
         {
             float lighten = 0.7f;
-            if(color == Colors.Black)
+            if (color == Colors.Black)
             {
                 lighten = 0.3f;
             }
-            if(color == Colors.Pink || color == Colors.Beige || color == Colors.Mint || color == Colors.Lavender)
+            if (color == Colors.Pink || color == Colors.Beige || color == Colors.Mint || color == Colors.Lavender)
             {
                 lighten = 0.5f;
             }
             return ExtensionMethods.ChangeColorBrightness(ExtensionMethods.BaseColor(color), lighten);
+        }
+
+        public static T Pop<T>(this List<T> list, int index = 0)
+        {
+            var result = list[index];
+            list.RemoveAt(index);
+            return result;
+        }
+
+        public static IEnumerable<T> Get<T>()
+            => ((T[])Enum.GetValues(typeof(T)));
+
+        public static string FirstLetterToUpper(this string str)
+        {
+            if (str == null)
+                return null;
+
+            if (str.Length > 1)
+                return char.ToUpper(str[0]) + str.Substring(1);
+
+            return str.ToUpper();
         }
     }
 }

@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame
 {
-    public class LangNone : LangValue
+    public class LangValue
     {
-        public override string ToString()
-        {
-            return "None";
-        }
     }
 }

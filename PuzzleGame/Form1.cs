@@ -54,20 +54,10 @@ namespace PuzzleGame
 
         private void richTextBoxRules_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                var program = new RulesProgram(richTextBoxRules.Text);
-                richTextBoxDebug.Text = String.Join("\n", program.Run());
-                //richTextBoxDebug.Text = String.Join("\n", program.Expressions);
-            }
-            catch (ParsingException ex)
-            {
-                richTextBoxDebug.Text = "Parsing error\n" + ex.Message;
-            }
-            catch (ExecutionException ex)
-            {
-                richTextBoxDebug.Text = "Execution error\n" + ex.Message;
-            }
+            richTextBoxDebug.Text = Language.QueryParam.NameUnknownFunction(richTextBoxRules.Text.Split(' ').Select(
+                i => new Language.Token(0, 0, i)  
+            ).ToList());
+            richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
         }
 
         private void richTextBoxGridSetup_TextChanged(object sender, EventArgs e)
