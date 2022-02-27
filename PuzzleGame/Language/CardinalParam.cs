@@ -6,18 +6,24 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame.Language
 {
-    public class CardinalParam : QueryParam
+    public class CardinalParam : SelectionParam
     {
         public int Amount { get; private set; }
         public bool Exact { get; private set; }
-        public bool Last { get; private set; }
-        public CardinalParam(int amount, bool exact, bool last, Token token = null)
+        public bool Each { get; private set; }
+        public bool Other { get; private set; }
+        public CardinalParam(int amount, bool exact, bool each, bool other, Token token = null)
         {
             Amount = amount;
             Exact = exact;
-            Last = last;
+            Each = each;
+            Other = other;
             Token = token;
         }
+
+        public override bool LinquisticPlural => Amount > 1;
+
+        public override bool SingleSelection => false;
 
         static List<string> Cardinal = new List<string>() { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty" };
         public static bool TryParse(List<Token> words, out QueryParam result)
@@ -28,29 +34,29 @@ namespace PuzzleGame.Language
                 var card = words.Pop();
                 var n = Cardinal.IndexOf(card.Content);
                 var virtualToken = Token.Between(exactly, card, "exactly " + card.Content);
-                result = new CardinalParam(n, true, false, virtualToken);
+                result = new CardinalParam(n, true, false, false, virtualToken);
                 return true;
             }
             if (words[0].Content == "no")
             {
-                result = new CardinalParam(0, true, false, words.Pop());
+                result = new CardinalParam(0, true, false, false, words.Pop());
                 return true;
             }
             if (words[0].Content == "some")
             {
-                result = new CardinalParam(1, false, false, words.Pop());
+                result = new CardinalParam(1, false, false, false, words.Pop());
                 return true;
             }
             if (words[0].Content == "each")
             {
-                result = new CardinalParam(0, false, true, words.Pop());
+                result = new CardinalParam(0, false, true, false, words.Pop());
                 return true;
             }
             if (Cardinal.Contains(words[0].Content))
             {
                 var card = words.Pop();
 
-                result = new CardinalParam(Cardinal.IndexOf(card.Content), false, false, card);
+                result = new CardinalParam(Cardinal.IndexOf(card.Content), false, false, false, card);
                 return true;
             }
             result = null;
@@ -64,13 +70,18 @@ namespace PuzzleGame.Language
                 new PriorityName("each", 0),
                 new PriorityName("some", 0),
                 new PriorityName("exactly one", 1),
+                new PriorityName("no other", 1),
+                new PriorityName("each other", 1),
+                new PriorityName("some other", 1),
+                new PriorityName("exactly one other", 1),
             };
 
             for (int i = 2; i <= 20; i++)
             {
-                result.Add(new PriorityName(Cardinal[i], i * 2));
-
-                result.Add(new PriorityName("exactly " + Cardinal[i], i * 2 + 1));
+                result.Add(new PriorityName(Cardinal[i], i * 4 + 1));
+                result.Add(new PriorityName("exactly " + Cardinal[i], i * 4 + 2));
+                result.Add(new PriorityName(Cardinal[i] + " other", i * 4 + 3));
+                result.Add(new PriorityName("exactly " + Cardinal[i] + " other", i * 4 + 4));
 
             }
             return result.Where(i => i.Name.StartsWith(prefix)).ToList();

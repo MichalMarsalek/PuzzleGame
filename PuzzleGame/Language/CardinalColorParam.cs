@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame.Language
 {
-    public class CardinalColorParam : QueryParam
+    public class CardinalColorParam : SelectionParam
     {
         public CardinalParam Cardinal { get; private set; }
         public ColorParam Color { get; private set; }
@@ -16,6 +16,10 @@ namespace PuzzleGame.Language
             Color = color;
             Token = Token.Between(Cardinal.Token, Color.Token);
         }
+
+        public override bool LinquisticPlural => Cardinal.LinquisticPlural;
+
+        public override bool SingleSelection => false;
 
         public static new IEnumerable<PriorityName> ValuesStartingWith(string prefix)
         {

@@ -57,6 +57,7 @@ namespace PuzzleGame
             richTextBoxDebug.Text = Language.QueryParam.NameUnknownFunction(richTextBoxRules.Text.Split(' ').Select(
                 i => new Language.Token(0, 0, i)  
             ).ToList());
+            richTextBoxDebug.Text += "\n" + (new Language.BinaryOperation("+", new Language.Atom(new Language.Number(1.0)), new Language.Atom(new Language.Number(2.0)), null)).Evaluate().ToString();
             richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
         }
 

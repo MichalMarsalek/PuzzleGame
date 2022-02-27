@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame.Language
 {
-    public class OrdinalColorParam : QueryParam
+    public class OrdinalColorParam : SelectionParam
     {
         public OrdinalParam Ordinal { get; private set; }
         public ColorParam Color { get; private set; }
@@ -16,6 +16,10 @@ namespace PuzzleGame.Language
             Color = color;
             Token = Token.Between(Ordinal.Token, Color.Token);
         }
+
+        public override bool LinquisticPlural => Color.LinquisticPlural;
+
+        public override bool SingleSelection => Color.SingleSelection;
 
         public static IEnumerable<PriorityName> ValuesStartingWith(string prefix)
         {

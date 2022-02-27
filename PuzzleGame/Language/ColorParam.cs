@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame.Language
 {
-    public class ColorParam : QueryParam
+    public class ColorParam : SelectionParam
     {
         public List<Colors> Colors { get; private set; }
-
         public ColorParam(List<Colors> colors, Token token = null)
         {
             Colors = colors;
             Token = token;
         }
+
+        public override bool LinquisticPlural => Colors.Count > 1;
+
+        public override bool SingleSelection => Colors.Count > 1;
+
 
         static List<string> Color = new List<string>() { "red", "blue", "green", "yellow", "white", "black", "lime" }; //TODO
         public static bool TryParse(List<Token> words, out QueryParam result)

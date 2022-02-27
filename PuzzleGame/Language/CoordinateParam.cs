@@ -30,6 +30,6 @@ namespace PuzzleGame.Language
             }
         }
         public static new List<PriorityName> AllValues()
-            => ExtensionMethods.Get<Coordinates>().Select(i => new PriorityName(i.ToString(), 0)).ToList();
+            => Extensions.Get<Coordinates>().Select(i => new PriorityName(i.ToString(), 0)).ToList();
     }
 }

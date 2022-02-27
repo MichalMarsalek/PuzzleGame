@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame
 {
-    public static class ExtensionMethods
+    public static class Extensions
     {
         public static void FillCircle(this Graphics g, Color color, Vector center, float radius)
         {
@@ -100,7 +100,7 @@ namespace PuzzleGame
 
         public static Color EdgeColor(Colors color)
         {
-            return ExtensionMethods.ChangeColorBrightness(ExtensionMethods.BaseColor(color), -0.2f);
+            return Extensions.ChangeColorBrightness(Extensions.BaseColor(color), -0.2f);
         }
 
         public static Color FillColor(Colors color)
@@ -114,7 +114,7 @@ namespace PuzzleGame
             {
                 lighten = 0.5f;
             }
-            return ExtensionMethods.ChangeColorBrightness(ExtensionMethods.BaseColor(color), lighten);
+            return Extensions.ChangeColorBrightness(Extensions.BaseColor(color), lighten);
         }
 
         public static T Pop<T>(this List<T> list, int index = 0)

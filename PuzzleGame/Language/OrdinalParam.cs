@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame.Language
 {
-    public class OrdinalParam : QueryParam
+    public class OrdinalParam : SelectionParam
     {
         public int Order { get; private set; }
         public bool Last { get; private set; }
@@ -16,6 +16,10 @@ namespace PuzzleGame.Language
             Last = last;
             Token = token;
         }
+
+        public override bool LinquisticPlural => false;
+
+        public override bool SingleSelection => true;
 
         static List<string> Ordinal = new List<string>() { "", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth", "eleventh", "twelveth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth" };
         public static bool TryParse(List<Token> words, out QueryParam result)

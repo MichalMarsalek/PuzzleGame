@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PuzzleGame
+namespace PuzzleGame.Language
 {
-    public enum LangType { Number, Coordinates, Angle, Bool }
-
-    public class LangNode
+    public abstract class LangNode
     {
-        public LangType Type;
+        public abstract object Evaluate();
+        public abstract Type EvaluateType();
     }
+
+    
 }
