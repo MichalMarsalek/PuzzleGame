@@ -21,6 +21,30 @@ namespace PuzzleGame.Language
             return data.ToMultival(new CardinalParam(0, false, true, false));
         }
 
+        public static Multival<T> ReduceIfBool<T>(this Multival<T> a)
+        {
+            return a;
+        }
+        public static bool ReduceIfBool(this Multival<bool> a)
+        {
+            int target = a.Cardinal.Each ? a.Values.Count() : a.Cardinal.Amount;
+            bool exact = a.Cardinal.Exact;
+            int sofar = 0;
+            foreach (var val in a.Values.Values)
+            {
+                if (val) sofar++;
+                if (sofar > target) break;
+            }
+            if (exact)
+            {
+                return sofar == target;
+            }
+            else
+            {
+                return sofar >= target;
+            }
+        }
+
 
         //public static bool MapIs<Number>(this Multival<Number> a, NumberPropertyParam property)
         //    => a.Map(i => i.Is(property)).Evaluate();

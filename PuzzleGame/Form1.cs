@@ -61,9 +61,9 @@ namespace PuzzleGame
                 richTextBoxDebug.Text = String.Join("|", new Language.Parser().GetTokens(richTextBoxRules.Text));
                 rule = new Language.Parser().ParseRule(richTextBoxRules.Text);
                 richTextBoxDebug.Text += "\n" + rule.EvaluateType().ToShortString();
-                //richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
-                //var res = rule.Evaluate(new Language.GridState(grid));
-                //richTextBoxDebug.Text += "\n" + res.ToString();
+                richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
+                var res = rule.Evaluate(new Language.GridState(grid));
+                richTextBoxDebug.Text += "\n" + res.ToString();
             }
             catch(Language.Exception ex)
             {

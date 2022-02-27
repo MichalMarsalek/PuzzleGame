@@ -166,52 +166,18 @@ namespace PuzzleGame.Language
             }
         }
 
-        public bool EvaluateMultivalVal<T1, T2>(string opname, Multival<T1> a, T2 b)
+        public object EvaluateMultivalVal<T1, T2>(string opname, Multival<T1> a, T2 b)
         {
-            int target1 = a.Cardinal.Each ? a.Values.Count() : a.Cardinal.Amount;
-            bool exact1 = a.Cardinal.Exact;
-            int sofar1 = 0;
             var op = typeof(T1).GetMethod(opname, new Type[] { typeof(T2) });
-            foreach (string key1 in a.Values.Keys)
-            {
-                if ((bool)op.Invoke(a.Values[key1], new object[] { b }))
-                {
-                    sofar1++;
-                }
-                if (sofar1 > target1) break;
-            }
-            if (exact1)
-            {
-                return sofar1 == target1;
-            }
-            else
-            {
-                return sofar1 >= target1;
-            }
+            var result = a.Map(i => op.Invoke(i, new object[] { b }));
+            return result.ReduceIfBool();
         }
 
-        public bool EvaluateValMultival <T1, T2>(string opname, T1 b, Multival<T2> a)
+        public object EvaluateValMultival <T1, T2>(string opname, T1 b, Multival<T2> a)
         {
-            int target1 = a.Cardinal.Each ? a.Values.Count() : a.Cardinal.Amount;
-            bool exact1 = a.Cardinal.Exact;
-            int sofar1 = 0;
             var op = typeof(T1).GetMethod(opname, new Type[] { typeof(T2) });
-            foreach (string key1 in a.Values.Keys)
-            {
-                if ((bool)op.Invoke(b, new object[] { a.Values[key1] }))
-                {
-                    sofar1++;
-                }
-                if (sofar1 > target1) break;
-            }
-            if (exact1)
-            {
-                return sofar1 == target1;
-            }
-            else
-            {
-                return sofar1 >= target1;
-            }
+            var result = a.Map(i => op.Invoke(b, new object[] { i }));
+            return result.ReduceIfBool();
         }
 
         public override object Evaluate(GridState state)
@@ -220,20 +186,29 @@ namespace PuzzleGame.Language
             Type t2 = Arg2.EvaluateType();
             bool multi1 = t1.IsGenericType;
             bool multi2 = t2.IsGenericType;
-            string method = "EvaluateValVal";
+            if (multi1)
+            {
+                t1 = t1.GetGenericArguments()[0];
+            }
+            if (multi2)
+            {
+                t2 = t2.GetGenericArguments()[0];
+            }
+            string methodName = "EvaluateValVal";
             if (multi1 && multi2)
             {
-                method = "EvaluateMultivalMultival";
+                methodName = "EvaluateMultivalMultival";
             }
             else if (multi1)
             {
-                method = "EvaluateMultivalVal";
+                methodName = "EvaluateMultivalVal";
             }
             else if (multi2)
             {
-                method = "EvaluateValMultival";
+                methodName = "EvaluateValMultival";
             }
-            return this.GetType().GetMethod(method).MakeGenericMethod(t1, t2)
+            var method = this.GetType().GetMethod(methodName).MakeGenericMethod(t1, t2);
+            return method
                 .Invoke(this, new object[] { OperatorMethods[Operator], Arg1.Evaluate(state), Arg2.Evaluate(state) });
         }
     }
