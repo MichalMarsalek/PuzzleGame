@@ -137,5 +137,11 @@ namespace PuzzleGame
 
             return str.ToUpper();
         }
+
+
+        public static string ToShortString(this Type type)
+        {
+            return type.ToString().Replace("PuzzleGame.Language.", "").Replace("System.", "");
+        }
     }
 }

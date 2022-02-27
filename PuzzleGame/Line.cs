@@ -69,5 +69,15 @@ namespace PuzzleGame
             return false;
 
         }
+
+        public float Length()
+        {
+            var result = 0.0f; 
+            for(int i = 1; i < Dots.Count; i++)
+            {
+                result += (Dots[i - 1].Position - Dots[i].Position).Norm2();
+            }
+            return result;
+        }
     }
 }

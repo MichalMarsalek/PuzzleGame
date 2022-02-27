@@ -17,11 +17,16 @@ namespace PuzzleGame.Language
             Cardinal = cardinal;
         }
 
+        public T One() => Values.First().Value;
+
         public Multival(T val)
         {
             Values = new Dictionary<string, T>() { { "single", val } };
         }
         public Multival<T2> Map<T2>(Func<T, T2> map)
         => new Multival<T2>(Values.ToDictionary(i => i.Key, i => map.Invoke(i.Value)), Cardinal);
+
+        public override string ToString()
+            => Cardinal.ToString() + "(" + String.Join(", ", Values) + ")";
     }
 }

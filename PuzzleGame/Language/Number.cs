@@ -13,8 +13,28 @@ namespace PuzzleGame.Language
         {
             Value = value;
         }
+        public Number(float value)
+        {
+            Value = (double)value;
+        }
+        public Number(string value)
+        {
+            Value = double.Parse(value);
+        }
 
         public Number Add(Number other) => new Number(Value + other.Value);
+        public Number Sub(Number other) => new Number(Value - other.Value);
+        public Number Mul(Number other) => new Number(Value * other.Value);
+        public Number Div(Number other) => new Number(Value / other.Value);
+        public Number Mod(Number other) => new Number(Value % other.Value);
+        public Number FloorDiv(Number other) => new Number((Value - Value % other.Value) / other.Value);
+
+        public bool Equal(Number other) => Math.Abs(Value - other.Value) < 1e-10;
+        public bool NotEqual(Number other) => !Equal(other);
+        public bool LessThan(Number other) => Value < other.Value;
+        public bool AtMost(Number other) => Equal(other) || LessThan(other);
+        public bool GreaterThan(Number other) => Value > other.Value;
+        public bool AtLeast(Number other) => Equal(other) || GreaterThan(other);
 
         public override string ToString() => Value.ToString();
     }

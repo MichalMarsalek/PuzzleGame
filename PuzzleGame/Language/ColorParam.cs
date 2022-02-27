@@ -17,7 +17,7 @@ namespace PuzzleGame.Language
 
         public override bool LinquisticPlural => Colors.Count > 1;
 
-        public override bool SingleSelection => Colors.Count > 1;
+        public override bool SingleSelection => Colors.Count == 1;
 
 
         static List<string> Color = new List<string>() { "red", "blue", "green", "yellow", "white", "black", "lime" }; //TODO

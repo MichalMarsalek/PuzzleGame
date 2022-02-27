@@ -11,7 +11,6 @@ namespace PuzzleGame.Language
         public string Operator { get; private set; }
         public LangNode Arg1 { get; private set; }
         public LangNode Arg2 { get; private set; }
-        public Token Token { get; private set; }
 
         private List<string> ComparisonOps = new List<string>() { "<", "<=", ">", ">=", "=", "!=" };
         private Dictionary<string, string> OperatorMethods = new Dictionary<string, string>() {
@@ -64,6 +63,8 @@ namespace PuzzleGame.Language
 
             {Tuple.Create("=",  typeof(Vector), typeof(Vector)), typeof(bool) },
             {Tuple.Create("!=", typeof(Vector), typeof(Vector)), typeof(bool) },
+            {Tuple.Create("=",  typeof(Number), typeof(Number)), typeof(bool) },
+            {Tuple.Create("!=", typeof(Number), typeof(Number)), typeof(bool) },
             {Tuple.Create("<",  typeof(Number), typeof(Number)), typeof(bool) },
             {Tuple.Create("<=", typeof(Number), typeof(Number)), typeof(bool) },
             {Tuple.Create(">",  typeof(Number), typeof(Number)), typeof(bool) },
@@ -71,6 +72,8 @@ namespace PuzzleGame.Language
 
             {Tuple.Create("=",  typeof(Multival<Vector>), typeof(Multival<Vector>)), typeof(bool) },
             {Tuple.Create("!=", typeof(Multival<Vector>), typeof(Multival<Vector>)), typeof(bool) },
+            {Tuple.Create("=",  typeof(Multival<Number>), typeof(Multival<Number>)), typeof(bool) },
+            {Tuple.Create("!=", typeof(Multival<Number>), typeof(Multival<Number>)), typeof(bool) },
             {Tuple.Create("<",  typeof(Multival<Number>), typeof(Multival<Number>)), typeof(bool) },
             {Tuple.Create("<=", typeof(Multival<Number>), typeof(Multival<Number>)), typeof(bool) },
             {Tuple.Create(">",  typeof(Multival<Number>), typeof(Multival<Number>)), typeof(bool) },
@@ -78,6 +81,8 @@ namespace PuzzleGame.Language
 
             {Tuple.Create("=",  typeof(Vector), typeof(Multival<Vector>)), typeof(bool) },
             {Tuple.Create("!=", typeof(Vector), typeof(Multival<Vector>)), typeof(bool) },
+            {Tuple.Create("=",  typeof(Number), typeof(Multival<Number>)), typeof(bool) },
+            {Tuple.Create("!=", typeof(Number), typeof(Multival<Number>)), typeof(bool) },
             {Tuple.Create("<",  typeof(Number), typeof(Multival<Number>)), typeof(bool) },
             {Tuple.Create("<=", typeof(Number), typeof(Multival<Number>)), typeof(bool) },
             {Tuple.Create(">",  typeof(Number), typeof(Multival<Number>)), typeof(bool) },
@@ -85,6 +90,8 @@ namespace PuzzleGame.Language
 
             {Tuple.Create("=",  typeof(Multival<Vector>), typeof(Vector)), typeof(bool) },
             {Tuple.Create("!=", typeof(Multival<Vector>), typeof(Vector)), typeof(bool) },
+            {Tuple.Create("=",  typeof(Multival<Number>), typeof(Number)), typeof(bool) },
+            {Tuple.Create("!=", typeof(Multival<Number>), typeof(Number)), typeof(bool) },
             {Tuple.Create("<",  typeof(Multival<Number>), typeof(Number)), typeof(bool) },
             {Tuple.Create("<=", typeof(Multival<Number>), typeof(Number)), typeof(bool) },
             {Tuple.Create(">",  typeof(Multival<Number>), typeof(Number)), typeof(bool) },
@@ -109,7 +116,7 @@ namespace PuzzleGame.Language
             }
             catch
             {
-                throw new Language.Exception("Wrong types. " + t1.ToString() + Operator + t2.ToString() + " not supported.");
+                throw new Language.Exception(("Wrong types. " + t1.ToShortString() + Operator + t2.ToShortString() + " not supported."));
             }
         }
         public object EvaluateValVal<T1, T2>(string opname, T1 a, T2 b)
@@ -207,7 +214,7 @@ namespace PuzzleGame.Language
             }
         }
 
-        public override object Evaluate()
+        public override object Evaluate(GridState state)
         {
             Type t1 = Arg1.EvaluateType();
             Type t2 = Arg2.EvaluateType();
@@ -227,7 +234,7 @@ namespace PuzzleGame.Language
                 method = "EvaluateValMultival";
             }
             return this.GetType().GetMethod(method).MakeGenericMethod(t1, t2)
-                .Invoke(this, new object[] { OperatorMethods[Operator], Arg1.Evaluate(), Arg2.Evaluate() });
+                .Invoke(this, new object[] { OperatorMethods[Operator], Arg1.Evaluate(state), Arg2.Evaluate(state) });
         }
     }
 }

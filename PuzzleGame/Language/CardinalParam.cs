@@ -85,6 +85,16 @@ namespace PuzzleGame.Language
 
             }
             return result.Where(i => i.Name.StartsWith(prefix)).ToList();
+
+        }
+
+        public override string ToString()
+        {
+            string result = Amount.ToString();
+            if (Each) result = "each";
+            if (Exact) result = "exactly " + result;
+            if (Other) result += " other";
+            return result;
         }
     }
 }

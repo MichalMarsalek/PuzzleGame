@@ -16,6 +16,8 @@ namespace PuzzleGame
 
         private GridSetupCode gridSetupCode;
 
+        private Language.LangNode rule;
+
         public Form1()
         {
             InitializeComponent();
@@ -54,11 +56,20 @@ namespace PuzzleGame
 
         private void richTextBoxRules_TextChanged(object sender, EventArgs e)
         {
-            richTextBoxDebug.Text = Language.QueryParam.NameUnknownFunction(richTextBoxRules.Text.Split(' ').Select(
-                i => new Language.Token(0, 0, i)  
-            ).ToList());
-            richTextBoxDebug.Text += "\n" + (new Language.BinaryOperation("+", new Language.Atom(new Language.Number(1.0)), new Language.Atom(new Language.Number(2.0)), null)).Evaluate().ToString();
-            richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
+            try
+            {
+                richTextBoxDebug.Text = String.Join("|", new Language.Parser().GetTokens(richTextBoxRules.Text));
+                rule = new Language.Parser().ParseRule(richTextBoxRules.Text);
+                richTextBoxDebug.Text += "\n" + rule.EvaluateType().ToShortString();
+                //richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
+                //var res = rule.Evaluate(new Language.GridState(grid));
+                //richTextBoxDebug.Text += "\n" + res.ToString();
+            }
+            catch(Language.Exception ex)
+            {
+                richTextBoxDebug.Text = ex.Message;
+                rule = null;
+            }
         }
 
         private void richTextBoxGridSetup_TextChanged(object sender, EventArgs e)

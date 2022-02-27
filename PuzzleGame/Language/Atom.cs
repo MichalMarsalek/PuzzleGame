@@ -10,12 +10,13 @@ namespace PuzzleGame.Language
     {
         public object Value { get; private set; }
 
-        public Atom(object value)
+        public Atom(object value, Token token = null)
         {
             Value = value;
+            Token = token;
         }
 
-        public override object Evaluate() => Value;
+        public override object Evaluate(GridState state) => Value;
 
         public override Type EvaluateType() => Value.GetType();
     }
