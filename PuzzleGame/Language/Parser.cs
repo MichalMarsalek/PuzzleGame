@@ -95,6 +95,10 @@ namespace PuzzleGame.Language
         }
 
         private LangNode ParseRule(List<Token> tokens) { //TODO include operator precedence.
+            if (tokens.Count == 0)
+            {
+                throw new Language.Exception("Parsing error, unexpected end of sentence.", null);
+            }
             int i = 0;
             LangNode prevValue = null;
             string prevOp = null;
@@ -124,7 +128,7 @@ namespace PuzzleGame.Language
                     {
                         if(tokens[i].Content == "-")
                         {
-                            tokens.Insert(i, new Token(TokenTypes.Operator, tokens[i].Start, 1, "-"));
+                            tokens.Insert(i, new Token(TokenTypes.Number, tokens[i].Start, 1, "0"));
                             continue;
                         }
                         else
