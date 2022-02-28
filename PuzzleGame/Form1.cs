@@ -16,7 +16,7 @@ namespace PuzzleGame
 
         private GridSetupCode gridSetupCode;
 
-        private Language.LangNode rule;
+        private Language.Node rule;
 
         public Form1()
         {

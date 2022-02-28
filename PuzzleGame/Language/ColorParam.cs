@@ -23,6 +23,8 @@ namespace PuzzleGame.Language
         static List<string> Color = new List<string>() { "red", "blue", "green", "yellow", "white", "black", "lime" }; //TODO
         public static bool TryParse(List<Token> words, out QueryParam result)
         {
+            //strict means we require no words to be left
+            result = null;
             List<Token> colors = new List<Token>();
             foreach (Token word in words)
             {
@@ -46,7 +48,6 @@ namespace PuzzleGame.Language
                 result = new ColorParam(colorEnum, virtualToken);
                 return true;
             }
-            result = null;
             return false;
         }
 

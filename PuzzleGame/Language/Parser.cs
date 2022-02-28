@@ -89,18 +89,18 @@ namespace PuzzleGame.Language
 
             }
         }
-        public LangNode ParseRule(string code)
+        public Node ParseRule(string code)
         {
             return ParseRule(GetTokens(code).ToList());
         }
 
-        private LangNode ParseRule(List<Token> tokens) { //TODO include operator precedence.
+        private Node ParseRule(List<Token> tokens) { //TODO include operator precedence.
             if (tokens.Count == 0)
             {
                 throw new Language.Exception("Parsing error, unexpected end of sentence.", null);
             }
             int i = 0;
-            LangNode prevValue = null;
+            Node prevValue = null;
             string prevOp = null;
             Token prevOpToken = null;
             while (i < tokens.Count)
@@ -151,7 +151,7 @@ namespace PuzzleGame.Language
                         words.Add(tokens[i + 1]);
                         i++;
                     }
-                    var q = ParseQuery(words);
+                    var q = Query.ParseQuery(words);
                     if (atStart)
                     {
                         prevValue = q;
@@ -173,14 +173,6 @@ namespace PuzzleGame.Language
                 throw new Language.Exception("Parsing error, unexpected end of sentence.", tokens.Last());
             }
             return prevValue;
-        }
-
-        private LangQuery ParseQuery(List<Token> words)
-        {
-            var colors = new List<Colors>();
-            if (words.Select(i => i.Content).Contains("red")) colors.Add(Colors.Red);
-            if (words.Select(i => i.Content).Contains("blue")) colors.Add(Colors.Blue);
-            return new LangQuery("LengthOf_Line", new List<QueryParam>() { new ColorParam(colors) }, words[0]);
         }
     }
 }

@@ -141,7 +141,7 @@ namespace PuzzleGame
 
         public static string ToShortString(this Type type)
         {
-            return type.ToString().Replace("PuzzleGame.Language.", "").Replace("System.", "");
+            return type.ToString().Replace("PuzzleGame.Language.", "").Replace("System.", "").Replace("Multival`1", "");
         }
     }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame.Language
 {
-    public class BinaryOperation : LangNode
+    public class BinaryOperation : Node
     {
         public string Operator { get; private set; }
-        public LangNode Arg1 { get; private set; }
-        public LangNode Arg2 { get; private set; }
+        public Node Arg1 { get; private set; }
+        public Node Arg2 { get; private set; }
 
         private List<string> ComparisonOps = new List<string>() { "<", "<=", ">", ">=", "=", "!=" };
         private Dictionary<string, string> OperatorMethods = new Dictionary<string, string>() {
@@ -98,7 +98,7 @@ namespace PuzzleGame.Language
             {Tuple.Create(">=", typeof(Multival<Number>), typeof(Number)), typeof(bool) },
         };
 
-        public BinaryOperation(string op, LangNode arg1, LangNode arg2, Token token)
+        public BinaryOperation(string op, Node arg1, Node arg2, Token token)
         {
             Operator = op;
             Arg1 = arg1;

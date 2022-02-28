@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame.Language
 {
-    public class Atom : LangNode
+    public class Atom : Node
     {
         public object Value { get; private set; }
 

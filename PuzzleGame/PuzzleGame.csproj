@@ -67,6 +67,7 @@
     <Compile Include="Grid.Designer.cs">
       <DependentUpon>Grid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Language\FunctionSignature.cs" />
     <Compile Include="Language\GridState.cs" />
     <Compile Include="Language\ColorParam.cs" />
     <Compile Include="Language\CoordinateParam.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="Language\Atom.cs" />
     <Compile Include="Language\MatchParam.cs" />
     <Compile Include="Language\MultivalExtensions.cs" />
-    <Compile Include="Language\LangNode.cs" />
+    <Compile Include="Language\Node.cs" />
     <Compile Include="Language\Multival.cs" />
     <Compile Include="Language\Number.cs" />
     <Compile Include="Language\NumberPropertyParam.cs" />
@@ -90,13 +91,18 @@
     <Compile Include="LineSegment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SmartCanvas.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SmartCanvas.Designer.cs">
       <DependentUpon>SmartCanvas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Language\LangQuery.cs" />
+    <Compile Include="Language\Query.cs" />
     <Compile Include="Language\Token.cs" />
     <Compile Include="Vector.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -110,11 +116,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -130,6 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\stdlib.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FunctionNames.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

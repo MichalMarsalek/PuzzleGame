@@ -25,7 +25,10 @@ namespace PuzzleGame.Language
             var result = new Dictionary<Colors, Line>();
             foreach(var color in a.Colors)
             {
-                result[color] = Lines[color];
+                if (Lines.ContainsKey(color))
+                    result[color] = Lines[color];
+                else
+                    result[color] = new Line(color);
             }
             return result;
         }

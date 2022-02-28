@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGame.Language
 {
-    public abstract class LangNode
+    public abstract class Node
     {
         public Token Token { get; protected set; }
 

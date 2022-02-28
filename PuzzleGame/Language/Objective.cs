@@ -8,9 +8,9 @@ namespace PuzzleGame.Language
 {
     public class Objective
     {
-        public List<LangNode> Rules {get; private set;}
+        public List<Node> Rules {get; private set;}
 
-        public Objective(List<LangNode> rules)
+        public Objective(List<Node> rules)
         {
             Rules = rules;
         }

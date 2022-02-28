@@ -61,11 +61,11 @@ namespace PuzzleGame.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to length of _ line.
         /// </summary>
-        internal static string stdlib {
+        internal static string FunctionNames {
             get {
-                return ResourceManager.GetString("stdlib", resourceCulture);
+                return ResourceManager.GetString("FunctionNames", resourceCulture);
             }
         }
     }
