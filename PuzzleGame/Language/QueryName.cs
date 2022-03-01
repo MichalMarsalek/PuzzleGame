@@ -9,6 +9,7 @@ namespace PuzzleGame.Language
     public class QueryName
     {
         public List<string> Words { get; private set; }
+        public List<string> WordsPlural { get; private set; }
         private static Dictionary<string, string> pluralisation = new Dictionary<string, string>()
         {
             { "is", "are" },
@@ -22,6 +23,7 @@ namespace PuzzleGame.Language
         public QueryName(string name)
         {
             Words = name.Split(' ').ToList();
+            WordsPlural = Words.Select(i => pluralisation.ContainsKey(i) ? pluralisation[i] : i).ToList();
         }
 
         public string Substitute(List<QueryParam> parameters)

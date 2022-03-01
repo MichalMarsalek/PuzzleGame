@@ -93,6 +93,11 @@ namespace PuzzleGame.Language
         {
             return ParseRule(GetTokens(code).ToList());
         }
+        public Objective ParseObjective(string code)
+        {
+            return new Objective(code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
+                .Select(i => ParseRule(i)).ToList());
+        }
 
         private Node ParseRule(List<Token> tokens) { //TODO include operator precedence.
             if (tokens.Count == 0)

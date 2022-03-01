@@ -14,5 +14,13 @@ namespace PuzzleGame.Language
         {
             Rules = rules;
         }
+
+        public List<Type> EvaluateTypes() => Rules.Select(i => i.EvaluateType()).ToList();
+        public List<object> EvaluateValues(GridState state) => Rules.Select(i => i.Evaluate(state)).ToList();
+
+        public string ToCode()
+        {
+            return String.Join("\r\n", Rules.Select(i => i.ToCode().FirstLetterToUpper() + "."));
+        }
     }
 }

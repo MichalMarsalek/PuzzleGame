@@ -89,7 +89,10 @@ namespace PuzzleGame.Language
                 while (codePtr < words.Count && sgnPtr < function.Words.Count)
                 {
                     if(function.Words[sgnPtr] == "_"
-                        && (sgnPtr == function.Words.Count - 1 || words[codePtr].Content != function.Words[sgnPtr+1]))
+                        && (sgnPtr == function.Words.Count - 1 || (
+                            words[codePtr].Content.ToLower() != function.Words[sgnPtr+1]
+                         && words[codePtr].Content.ToLower() != function.WordsPlural[sgnPtr + 1]
+                            )))
                     {
                         lastArg.Add(words[codePtr]);
                         codePtr++;
@@ -99,7 +102,8 @@ namespace PuzzleGame.Language
                         lastArg = new List<Token>();
                         sgnPtr++;
                     }
-                    else if(words[codePtr].Content == function.Words[sgnPtr])
+                    else if(words[codePtr].Content.ToLower() == function.Words[sgnPtr] ||
+                        words[codePtr].Content.ToLower() == function.WordsPlural[sgnPtr])
                     {
                         codePtr++;
                         sgnPtr++;

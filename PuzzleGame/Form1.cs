@@ -16,7 +16,7 @@ namespace PuzzleGame
 
         private GridSetupCode gridSetupCode;
 
-        private Language.Node rule;
+        private Language.Objective objective;
 
         public Form1()
         {
@@ -58,17 +58,17 @@ namespace PuzzleGame
         {
             try
             {
-                richTextBoxDebug.Text = String.Join("|", new Language.Parser().GetTokens(richTextBoxRules.Text));
-                rule = new Language.Parser().ParseRule(richTextBoxRules.Text);
-                richTextBoxDebug.Text += "\n" + rule.EvaluateType().ToShortString();
-                richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
-                var res = rule.Evaluate(new Language.GridState(grid));
-                richTextBoxDebug.Text += "\n" + res.ToString();
+                //richTextBoxDebug.Text = String.Join("|", new Language.Parser().GetTokens(richTextBoxRules.Text));
+                //richTextBoxDebug.Text += "\n" + objective.EvaluateTypes().ToShortString();
+                //richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
+                objective = new Language.Parser().ParseObjective(richTextBoxRules.Text);
+                var res = objective.EvaluateValues(new Language.GridState(grid));
+                richTextBoxDebug.Text = String.Join("\r\n", res);
             }
             catch(Language.Exception ex)
             {
                 richTextBoxDebug.Text = ex.Message;
-                rule = null;
+                objective = null;
             }
         }
 
@@ -84,12 +84,7 @@ namespace PuzzleGame
 
         private void buttonFormat_Click(object sender, EventArgs e)
         {
-            try
-            {
-                rule = new Language.Parser().ParseRule(richTextBoxRules.Text);
-            }
-            catch { return; }
-            richTextBoxRules.Text = rule.ToCode();
+            richTextBoxRules.Text = objective.ToCode();
         }
     }
 }
