@@ -36,7 +36,7 @@ namespace PuzzleGame.Language
         {
             var func = typeof(GridState).GetMethod(Name.Method, Params.Select(i => i.GetType()).ToArray());
             var result = func.Invoke(state, Params.ToArray());
-            if (IsSingularValue)
+            if (IsSingularValue && func.IsGenericMethod)
             {
                 return result.GetType().GetMethod("One").Invoke(result, null);
             }
@@ -51,7 +51,7 @@ namespace PuzzleGame.Language
                 throw new Language.Exception("Wrong types. " + Name + " with types "
                     + String.Join(", ", Params.Select(i => i.GetType().ToShortString())) + " not implemented.");
             }
-            if (IsSingularValue)
+            if (IsSingularValue && func.IsGenericMethod)
             {
                 return func.ReturnType.GetGenericArguments()[0];
             }
@@ -133,5 +133,10 @@ namespace PuzzleGame.Language
         }
 
         public override string ToCode() => Name.Substitute(Params);
+
+        public override bool ContainsQuery(string name, bool include)
+        {
+            return (Name.ToString() == name) == include;
+        }
     }
 }

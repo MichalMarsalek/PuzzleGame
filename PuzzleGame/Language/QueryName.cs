@@ -18,6 +18,7 @@ namespace PuzzleGame.Language
             { "point", "points" },
             { "angle", "angles" },
             { "crosses", "cross" },
+            { "rule", "rules" },
         };
 
         public QueryName(string name)
@@ -61,5 +62,7 @@ namespace PuzzleGame.Language
         {
             get => String.Join("", Words.Select(i => i.FirstLetterToUpper()));
         }
+
+        public override string ToString() => String.Join(" ", Words);
     }
 }

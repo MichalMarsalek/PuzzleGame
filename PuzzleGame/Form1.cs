@@ -56,16 +56,29 @@ namespace PuzzleGame
 
         private void richTextBoxRules_TextChanged(object sender, EventArgs e)
         {
+            //richTextBoxDebug.Text = String.Join("|", new Language.Parser().GetTokens(richTextBoxRules.Text));
+            //richTextBoxDebug.Text += "\n" + objective.EvaluateTypes().ToShortString();
+            //richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
+            List<Type> types;
             try
             {
-                //richTextBoxDebug.Text = String.Join("|", new Language.Parser().GetTokens(richTextBoxRules.Text));
-                //richTextBoxDebug.Text += "\n" + objective.EvaluateTypes().ToShortString();
-                //richTextBoxDebug.Text += "\n" + String.Join("\n", Language.QueryParam.GetAllValuesStartingWith(richTextBoxRules.Text).Take(50));
                 objective = new Language.Parser().ParseObjective(richTextBoxRules.Text);
-                var res = objective.EvaluateValues(new Language.GridState(grid));
-                richTextBoxDebug.Text = String.Join("\r\n", res);
+                types = objective.EvaluateTypes();
             }
             catch(Language.Exception ex)
+            {
+                richTextBoxDebug.Text = ex.Message;
+                objective = null;
+                return;
+            }
+            try
+            {
+                var res = objective.EvaluateValues(new Language.GridState(grid));
+                richTextBoxDebug.Text = String.Join("\r\n", res);
+                if(types.All(i => i == typeof(bool)))
+                    richTextBoxDebug.Text += "\r\nFinal value: " + objective.IsMet(res).ToString();
+            }
+            catch (Language.Exception ex)
             {
                 richTextBoxDebug.Text = ex.Message;
                 objective = null;
@@ -84,7 +97,8 @@ namespace PuzzleGame
 
         private void buttonFormat_Click(object sender, EventArgs e)
         {
-            richTextBoxRules.Text = objective.ToCode();
+            if(objective != null)
+                richTextBoxRules.Text = objective.ToCode();
         }
     }
 }

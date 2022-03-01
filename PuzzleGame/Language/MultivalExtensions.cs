@@ -12,13 +12,17 @@ namespace PuzzleGame.Language
         {
             return new Multival<T>(data.ToDictionary(i => i.ToString(), i => i), card);
         }
+        public static Multival<T> ToMultival<T>(this List<T> data)
+        {
+            return data.ToMultival(CardinalParam.Each);
+        }
         public static Multival<T> ToMultival<T, T2>(this Dictionary<T2, T> data, CardinalParam card)
         {
             return new Multival<T>(data.ToDictionary(i => i.Key.ToString(), i => i.Value), card);
         }
         public static Multival<T> ToMultival<T, T2>(this Dictionary<T2, T> data)
         {
-            return data.ToMultival(new CardinalParam(0, false, true, false));
+            return data.ToMultival(CardinalParam.Each);
         }
 
         public static bool Id(bool x) => x;
@@ -27,8 +31,8 @@ namespace PuzzleGame.Language
         {
             if (a.Values.Values.First().GetType() == typeof(bool))
             {
-                int target = a.Cardinal.Each ? a.Values.Count() : a.Cardinal.Amount;
-                bool exact = a.Cardinal.Exact;
+                int target = a.Cardinal.IsEach ? a.Values.Count() : a.Cardinal.Amount;
+                bool exact = a.Cardinal.IsExact;
                 int sofar = 0;
                 foreach (var val in a.Values.Values)
                 {

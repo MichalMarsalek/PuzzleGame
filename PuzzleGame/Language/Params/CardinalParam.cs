@@ -9,17 +9,18 @@ namespace PuzzleGame.Language
     public class CardinalParam : SelectionParam
     {
         public int Amount { get; private set; }
-        public bool Exact { get; private set; }
-        public bool Each { get; private set; }
-        public bool Other { get; private set; }
+        public bool IsExact { get; private set; }
+        public bool IsEach { get; private set; }
+        public bool IsOther { get; private set; }
         public CardinalParam(int amount, bool exact, bool each, bool other, Token token = null)
         {
             Amount = amount;
-            Exact = exact;
-            Each = each;
-            Other = other;
+            IsExact = exact;
+            IsEach = each;
+            IsOther = other;
             Token = token;
         }
+        public static CardinalParam Each = new CardinalParam(0, false, true, false);
 
         public override bool LinquisticPlural => Amount > 1;
 
@@ -91,9 +92,9 @@ namespace PuzzleGame.Language
         public override string ToString()
         {
             string result = Amount.ToString();
-            if (Each) result = "each";
-            if (Exact) result = "exactly " + result;
-            if (Other) result += " other";
+            if (IsEach) result = "each";
+            if (IsExact) result = "exactly " + result;
+            if (IsOther) result += " other";
             return result;
         }
 

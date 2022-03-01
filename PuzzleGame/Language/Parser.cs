@@ -71,6 +71,11 @@ namespace PuzzleGame.Language
                     continue;
                 }
                 w = Scan(chars, @"^[a-zA-Z]$");
+                if(w != "" && "mod div".Contains(w))
+                {
+                    yield return new Token(TokenTypes.Operator, code.Length - chars.Remaining.Length, w.Length, w);
+                    continue;
+                }
                 if (w != "")
                 {
                     if (chars.Any() && chars.Peek() == ',')
@@ -84,19 +89,52 @@ namespace PuzzleGame.Language
                     yield return new Token(TokenTypes.Number, code.Length - chars.Remaining.Length, w.Length, w);
                     continue;
                 }
-                w = Scan(chars, @"^[a-zA-Z0-9\s]$", false);
+                if (chars.Peek() == '.')
+                {
+                    w = chars.Read().ToString();
+                }
+                else
+                {
+                    w = Scan(chars, @"^[a-zA-Z0-9\s]$", false);
+                }
                 yield return new Token(TokenTypes.Operator, code.Length - chars.Remaining.Length, w.Length, w);
 
             }
         }
         public Node ParseRule(string code)
         {
+            if (code.EndsWith("."))
+                code = code.Substring(0, code.Length - 1);
             return ParseRule(GetTokens(code).ToList());
         }
         public Objective ParseObjective(string code)
         {
-            return new Objective(code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
-                .Select(i => ParseRule(i)).ToList());
+            var rules = code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
+                .Select(i => ParseRule(i)).ToList();
+            Node finalObjective;
+            if (rules.Last().ContainsQuery("_ rule is _"))
+            {
+                finalObjective = rules.Pop(rules.Count - 1);
+                if (finalObjective.ContainsQuery("_ rules is _", false))
+                {
+                    throw new Language.Exception("Objective cannot query the grid directly, only trough the rules.");
+                }
+            }
+            else
+            {
+                finalObjective = new Query(
+                    new QueryName("_ rule is _"),
+                    new List<QueryParam>() { CardinalParam.Each, new FullfillnessParam(true) }
+                );
+            }
+            foreach(var rule in rules)
+            {
+                if (rule.ContainsQuery("_ rule is _"))
+                {
+                    throw new Language.Exception("Only the objective can query other rules.");
+                }
+            }
+            return new Objective(rules, finalObjective);
         }
 
         private Node ParseRule(List<Token> tokens) { //TODO include operator precedence.

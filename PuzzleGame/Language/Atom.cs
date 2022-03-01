@@ -24,5 +24,6 @@ namespace PuzzleGame.Language
 
         public override string ToCode() => Value.ToString();
 
+        public override bool ContainsQuery(string name, bool include) => false;
     }
 }

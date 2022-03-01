@@ -11,6 +11,7 @@ namespace PuzzleGame.Language
         public List<Dot> Dots { get; private set; }
         public Dictionary<Colors, Line> Lines { get; private set; }
         public Dictionary<Colors, Line> Polygons { get; private set; }
+        public List<bool> Rules { get; private set; }
 
         public GridState(Grid grid)
         {
@@ -18,8 +19,20 @@ namespace PuzzleGame.Language
             Lines = grid.Lines.Where(i => i != null).ToDictionary(i => i.Color, i => i);
             Polygons = new Dictionary<Colors, Line>();
         }
+        public GridState(List<bool> rules)
+        {
+            Rules = rules;
+        }
 
         //Selection helpers
+        private List<bool> PickRules(OrdinalParam a)
+        {
+            if (a.Order > Rules.Count || Rules.Count == 0)
+                return new List<bool>() { false };
+            if(a.Last)
+                return new List<bool>() { Rules.Last() };
+            return new List<bool>() { Rules[a.Order-1] };
+        }
         private Dictionary<Colors, Line> PickLines(ColorParam a)
         {
             var result = new Dictionary<Colors, Line>();
@@ -44,11 +57,17 @@ namespace PuzzleGame.Language
 
 
         //Query functions
+        public bool _RuleIs_(CardinalParam a, FullfillnessParam b)
+            => (bool)Rules.ToMultival(a).Map(i => i == b.Fullfilled).ReduceIfBool();
+        public bool _RuleIs_(OrdinalParam a, FullfillnessParam b)
+            => (bool)PickRules(a).ToMultival().Map(i => i == b.Fullfilled).ReduceIfBool();
+
         public Multival<Number> LengthOf_Line(CardinalParam a)
             => Lines.ToMultival(a).Map(i => new Number(i.Length()));
         public Multival<Number> LengthOf_Line(ColorParam a)
             => PickLines(a).ToMultival().Map(i => new Number(i.Length()));
 
+        public bool UniversalTruth() => true;
 
     }
 }

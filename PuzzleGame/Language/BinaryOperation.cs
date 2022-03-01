@@ -11,8 +11,7 @@ namespace PuzzleGame.Language
         public string Operator { get; private set; }
         public Node Arg1 { get; private set; }
         public Node Arg2 { get; private set; }
-
-        private List<string> ComparisonOps = new List<string>() { "<", "<=", ">", ">=", "=", "!=" };
+        
         private Dictionary<string, string> OperatorMethods = new Dictionary<string, string>() {
             { "<",  "LessThan" },
             { "<=", "AtMost" },
@@ -20,17 +19,21 @@ namespace PuzzleGame.Language
             { ">=", "AtLeast" },
             { "=",  "Equal" },
             { "!=", "NotEqual" },
+            { ".", "And" },
 
             { "+", "Add" },
             { "-", "Sub" },
             { "*", "Mul" },
             { "/", "Div" },
-            { "//","FloorDiv" },
-            { "%", "Mod" },
+            { "div","FloorDiv" },
+            { "mod", "Mod" },
         };
 
         private Dictionary<Tuple<string, Type, Type>, Type> OpData = new Dictionary<Tuple<string, Type, Type>, Type>()
         {
+
+            {Tuple.Create(".", typeof(bool), typeof(bool)), typeof(bool) },
+
             {Tuple.Create("+", typeof(Number), typeof(Number)), typeof(Number) },
             {Tuple.Create("-", typeof(Number), typeof(Number)), typeof(Number) },
             {Tuple.Create("*", typeof(Number), typeof(Number)), typeof(Number) },
@@ -121,6 +124,9 @@ namespace PuzzleGame.Language
         }
         public object EvaluateValVal<T1, T2>(string opname, T1 a, T2 b)
         {
+            if (opname == "And")
+                return (bool)typeof(MultivalExtensions).GetMethod("Id").Invoke(null, new object[] { a })
+                 && (bool)typeof(MultivalExtensions).GetMethod("Id").Invoke(null, new object[] { b });
             var op = typeof(T1).GetMethod(opname, new Type[] { typeof(T2) });
             return op.Invoke(a, new object[] { b });
         }
@@ -128,18 +134,18 @@ namespace PuzzleGame.Language
 
         public bool EvaluateMultivaMultival<T1, T2>(string opname, Multival<T1> a, Multival<T2> b)
         {
-            int target1 = a.Cardinal.Each ? a.Values.Count() : a.Cardinal.Amount;
-            bool exact1 = a.Cardinal.Exact;
+            int target1 = a.Cardinal.IsEach ? a.Values.Count() : a.Cardinal.Amount;
+            bool exact1 = a.Cardinal.IsExact;
             int sofar1 = 0;
             var op = typeof(T1).GetMethod(opname, new Type[] { typeof(T2) });
             foreach (string key1 in a.Values.Keys)
             {
-                int target2 = b.Cardinal.Each ? (b.Values.Count() - (b.Cardinal.Other ? -1 : 0)) : b.Cardinal.Amount;
-                bool exact2 = b.Cardinal.Exact;
+                int target2 = b.Cardinal.IsEach ? (b.Values.Count() - (b.Cardinal.IsOther ? -1 : 0)) : b.Cardinal.Amount;
+                bool exact2 = b.Cardinal.IsExact;
                 int sofar2 = 0;
                 foreach (string key2 in b.Values.Keys)
                 {
-                    if (b.Cardinal.Other && key1 == key2) continue;
+                    if (b.Cardinal.IsOther && key1 == key2) continue;
                     if ((bool)op.Invoke(a.Values[key1], new object[] { b.Values[key2] }))
                     {
                         sofar2++;
@@ -216,11 +222,20 @@ namespace PuzzleGame.Language
 
         public override string ToCode()
         {
-            if(Operator == "-" && Arg1.ToCode() == "0")
+            if(Operator == ".")
+            {
+                return Arg1.ToCode() + ". " + Arg2.ToCode().FirstLetterToUpper();
+            }
+            if (Operator == "-" && Arg1.ToCode() == "0")
             {
                 return "-" + Arg2.ToCode();
             }
             return Arg1.ToCode() + " " + Operator + " " + Arg2.ToCode();
+        }
+
+        public override bool ContainsQuery(string name, bool include)
+        {
+            return Arg1.ContainsQuery(name, include) || Arg2.ContainsQuery(name, include);
         }
     }
 }

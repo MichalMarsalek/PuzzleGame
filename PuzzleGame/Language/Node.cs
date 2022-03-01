@@ -12,6 +12,7 @@ namespace PuzzleGame.Language
 
         public abstract object Evaluate(GridState state);
         public abstract Type EvaluateType();
+        public abstract bool ContainsQuery(string name, bool include=true);
         public override abstract string ToString();
         public abstract string ToCode();
     }

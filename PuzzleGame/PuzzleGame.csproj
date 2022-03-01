@@ -73,6 +73,7 @@
     <Compile Include="Language\Params\CoordinateParam.cs" />
     <Compile Include="Language\Exception.cs" />
     <Compile Include="Language\Atom.cs" />
+    <Compile Include="Language\Params\FullfillnessParam.cs" />
     <Compile Include="Language\Params\MatchParam.cs" />
     <Compile Include="Language\MultivalExtensions.cs" />
     <Compile Include="Language\Node.cs" />
