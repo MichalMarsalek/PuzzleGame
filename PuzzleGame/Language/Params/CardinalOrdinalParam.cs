@@ -37,5 +37,7 @@ namespace PuzzleGame.Language
                 }
             }
         }
+
+        public override string ToCode() => Cardinal.ToCode() + " " + Ordinal.ToCode();
     }
 }

@@ -41,5 +41,7 @@ namespace PuzzleGame.Language
                 }
             }
         }
+
+        public override string ToCode() => Cardinal.ToCode() + " " + Color.ToCode();
     }
 }

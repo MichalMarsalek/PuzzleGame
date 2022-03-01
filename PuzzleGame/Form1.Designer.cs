@@ -35,6 +35,7 @@
             this.richTextBoxRules = new System.Windows.Forms.RichTextBox();
             this.richTextBoxDebug = new System.Windows.Forms.RichTextBox();
             this.grid = new PuzzleGame.Grid();
+            this.buttonFormat = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -111,11 +112,22 @@
             this.grid.TabIndex = 0;
             this.grid.MouseUp += new System.Windows.Forms.MouseEventHandler(this.grid_MouseUp);
             // 
+            // buttonFormat
+            // 
+            this.buttonFormat.Location = new System.Drawing.Point(601, 313);
+            this.buttonFormat.Name = "buttonFormat";
+            this.buttonFormat.Size = new System.Drawing.Size(75, 23);
+            this.buttonFormat.TabIndex = 6;
+            this.buttonFormat.Text = "Format";
+            this.buttonFormat.UseVisualStyleBackColor = true;
+            this.buttonFormat.Click += new System.EventHandler(this.buttonFormat_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1188, 620);
+            this.Controls.Add(this.buttonFormat);
             this.Controls.Add(this.richTextBoxDebug);
             this.Controls.Add(this.richTextBoxRules);
             this.Controls.Add(this.richTextBoxGridSetup);
@@ -140,6 +152,7 @@
         private System.Windows.Forms.RichTextBox richTextBoxGridSetup;
         private System.Windows.Forms.RichTextBox richTextBoxRules;
         private System.Windows.Forms.RichTextBox richTextBoxDebug;
+        private System.Windows.Forms.Button buttonFormat;
     }
 }
 

@@ -42,5 +42,7 @@ namespace PuzzleGame.Language
                 }
             }
         }
+
+        public override string ToCode() => Ordinal.ToCode() + " " + Color.ToCode();
     }
 }

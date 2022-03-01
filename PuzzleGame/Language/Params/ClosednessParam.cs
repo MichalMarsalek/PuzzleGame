@@ -32,5 +32,7 @@ namespace PuzzleGame.Language
         public static List<PriorityName> ValuesStartingWith(string prefix = "")
             => new List<PriorityName>() { new PriorityName("closed", 0), new PriorityName("opened", 0) }
             .Where(i => i.Name.StartsWith(prefix)).ToList();
+
+        public override string ToCode() => Closed ? "closed" : "opened";
     }
 }

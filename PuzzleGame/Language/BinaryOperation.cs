@@ -211,5 +211,16 @@ namespace PuzzleGame.Language
             return method
                 .Invoke(this, new object[] { OperatorMethods[Operator], Arg1.Evaluate(state), Arg2.Evaluate(state) });
         }
+
+        public override string ToString() => "Op(" + Operator + ", " + Arg1 + ", " + Arg2 + ")";
+
+        public override string ToCode()
+        {
+            if(Operator == "-" && Arg1.ToCode() == "0")
+            {
+                return "-" + Arg2.ToCode();
+            }
+            return Arg1.ToCode() + " " + Operator + " " + Arg2.ToCode();
+        }
     }
 }

@@ -81,5 +81,15 @@ namespace PuzzleGame
         {
 
         }
+
+        private void buttonFormat_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                rule = new Language.Parser().ParseRule(richTextBoxRules.Text);
+            }
+            catch { return; }
+            richTextBoxRules.Text = rule.ToCode();
+        }
     }
 }

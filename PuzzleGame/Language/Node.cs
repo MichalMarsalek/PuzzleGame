@@ -12,6 +12,8 @@ namespace PuzzleGame.Language
 
         public abstract object Evaluate(GridState state);
         public abstract Type EvaluateType();
+        public override abstract string ToString();
+        public abstract string ToCode();
     }
 
     

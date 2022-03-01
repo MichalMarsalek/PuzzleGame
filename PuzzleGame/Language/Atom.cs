@@ -19,5 +19,10 @@ namespace PuzzleGame.Language
         public override object Evaluate(GridState state) => Value;
 
         public override Type EvaluateType() => Value.GetType();
+
+        public override string ToString() => ToCode();
+
+        public override string ToCode() => Value.ToString();
+
     }
 }

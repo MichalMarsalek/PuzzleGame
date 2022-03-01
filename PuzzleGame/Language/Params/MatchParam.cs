@@ -32,5 +32,7 @@ namespace PuzzleGame.Language
         public static List<PriorityName> ValuesStartingWith(string prefix = "")
             => new List<PriorityName>() { new PriorityName("matching", 0), new PriorityName("unmatching", 0) }
             .Where(i => i.Name.StartsWith(prefix)).ToList();
+
+        public override string ToCode() => Matching ? "matching" : "unmatching";
     }
 }

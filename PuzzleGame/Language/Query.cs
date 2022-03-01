@@ -8,15 +8,15 @@ namespace PuzzleGame.Language
 {
     public class Query : Node
     {
-        public string Name { get; private set; }
+        public QueryName Name { get; private set; }
         public List<QueryParam> Params { get; private set; }
         public bool IsSingularValue { get; private set; }
 
-        public static List<List<string>> Functions = Properties.Resources.FunctionNames
+        public static List<QueryName> Functions = Properties.Resources.FunctionNames
             .Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
-            .Select(i => i.Split(' ').ToList()).ToList();
+            .Select(i => new QueryName(i)).ToList();
 
-        public Query(string name, List<QueryParam> parameters, Token token = null)
+        public Query(QueryName name, List<QueryParam> parameters, Token token = null)
         {
             Name = name;
             Params = parameters;
@@ -34,7 +34,7 @@ namespace PuzzleGame.Language
 
         public override object Evaluate(GridState state)
         {
-            var func = typeof(GridState).GetMethod(Name, Params.Select(i => i.GetType()).ToArray());
+            var func = typeof(GridState).GetMethod(Name.Method, Params.Select(i => i.GetType()).ToArray());
             var result = func.Invoke(state, Params.ToArray());
             if (IsSingularValue)
             {
@@ -45,7 +45,7 @@ namespace PuzzleGame.Language
 
         public override Type EvaluateType()
         {
-            var func = typeof(GridState).GetMethod(Name, Params.Select(i => i.GetType()).ToArray());
+            var func = typeof(GridState).GetMethod(Name.Method, Params.Select(i => i.GetType()).ToArray());
             if(func == null)
             {
                 throw new Language.Exception("Wrong types. " + Name + " with types "
@@ -85,21 +85,21 @@ namespace PuzzleGame.Language
                 var lastArg = new List<Token>();
                 int codePtr = 0;
                 int sgnPtr = 0;
-                if (function.Count > words.Count) continue;
-                while (codePtr < words.Count && sgnPtr < function.Count)
+                if (function.Words.Count > words.Count) continue;
+                while (codePtr < words.Count && sgnPtr < function.Words.Count)
                 {
-                    if(function[sgnPtr] == "_"
-                        && (sgnPtr == function.Count - 1 || words[codePtr].Content != function[sgnPtr+1]))
+                    if(function.Words[sgnPtr] == "_"
+                        && (sgnPtr == function.Words.Count - 1 || words[codePtr].Content != function.Words[sgnPtr+1]))
                     {
                         lastArg.Add(words[codePtr]);
                         codePtr++;
                     }
-                    else if(function[sgnPtr] == "_"){
+                    else if(function.Words[sgnPtr] == "_"){
                         args.Add(lastArg);
                         lastArg = new List<Token>();
                         sgnPtr++;
                     }
-                    else if(words[codePtr].Content == function[sgnPtr])
+                    else if(words[codePtr].Content == function.Words[sgnPtr])
                     {
                         codePtr++;
                         sgnPtr++;
@@ -109,11 +109,10 @@ namespace PuzzleGame.Language
                         goto FunctionFailedMatch;
                     }
                 }
-                if(codePtr == words.Count && sgnPtr == function.Count)
+                if(codePtr == words.Count && sgnPtr == function.Words.Count)
                 {
-                    var methodName = String.Join("", function.Select(i => i.FirstLetterToUpper()));
                     List<QueryParam> parameters = args.Select(i => QueryParam.ParseParam(i)).ToList();
-                    return new Query(methodName, parameters);
+                    return new Query(function, parameters);
                 }
 
                 FunctionFailedMatch:
@@ -123,5 +122,12 @@ namespace PuzzleGame.Language
             var func = NameUnknownFunction(words);
             throw new Language.Exception("Unknown function \"" + func + "\".", null);
         }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToCode() => Name.Substitute(Params);
     }
 }

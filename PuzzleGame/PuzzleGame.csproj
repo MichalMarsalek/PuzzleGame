@@ -45,13 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Language\AngleProperty.cs" />
+    <Compile Include="Language\Params\AnglePropertyParam.cs" />
     <Compile Include="Language\BinaryOperation.cs" />
-    <Compile Include="Language\CardinalColorParam.cs" />
-    <Compile Include="Language\CardinalOrdinalParam.cs" />
-    <Compile Include="Language\CardinalParam.cs" />
+    <Compile Include="Language\Params\CardinalColorParam.cs" />
+    <Compile Include="Language\Params\CardinalOrdinalParam.cs" />
+    <Compile Include="Language\Params\CardinalParam.cs" />
     <Compile Include="Language\CharacterStream.cs" />
-    <Compile Include="Language\ClosednessParam.cs" />
+    <Compile Include="Language\Params\ClosednessParam.cs" />
     <Compile Include="Dot.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Form1.cs">
@@ -69,23 +69,24 @@
     </Compile>
     <Compile Include="Language\FunctionSignature.cs" />
     <Compile Include="Language\GridState.cs" />
-    <Compile Include="Language\ColorParam.cs" />
-    <Compile Include="Language\CoordinateParam.cs" />
+    <Compile Include="Language\Params\ColorParam.cs" />
+    <Compile Include="Language\Params\CoordinateParam.cs" />
     <Compile Include="Language\Exception.cs" />
     <Compile Include="Language\Atom.cs" />
-    <Compile Include="Language\MatchParam.cs" />
+    <Compile Include="Language\Params\MatchParam.cs" />
     <Compile Include="Language\MultivalExtensions.cs" />
     <Compile Include="Language\Node.cs" />
     <Compile Include="Language\Multival.cs" />
     <Compile Include="Language\Number.cs" />
-    <Compile Include="Language\NumberPropertyParam.cs" />
-    <Compile Include="Language\OrdinalColorParam.cs" />
-    <Compile Include="Language\OrdinalParam.cs" />
+    <Compile Include="Language\Params\NumberPropertyParam.cs" />
+    <Compile Include="Language\Params\OrdinalColorParam.cs" />
+    <Compile Include="Language\Params\OrdinalParam.cs" />
     <Compile Include="Language\Parser.cs" />
-    <Compile Include="Language\PolygonPropertyParam.cs" />
+    <Compile Include="Language\Params\PolygonPropertyParam.cs" />
     <Compile Include="Language\PriorityName.cs" />
-    <Compile Include="Language\QueryParam.cs" />
+    <Compile Include="Language\Params\QueryParam.cs" />
     <Compile Include="Language\Objective.cs" />
+    <Compile Include="Language\QueryName.cs" />
     <Compile Include="Language\SelectionParam.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="LineSegment.cs" />

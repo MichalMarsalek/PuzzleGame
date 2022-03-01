@@ -67,5 +67,7 @@ namespace PuzzleGame.Language
             foreach (var name in ClosednessParam.ValuesStartingWith(prefix)) names.Add(name);
             return names.OrderBy(i => i.Priority).ToList();
         }
+
+        public abstract string ToCode();
     }
 }

@@ -21,7 +21,7 @@ namespace PuzzleGame.Language
 
         public override bool SingleSelection => true;
 
-        static List<string> Ordinal = new List<string>() { "", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth", "eleventh", "twelveth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth" };
+        static List<string> OrdinalWords = new List<string>() { "", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth", "eleventh", "twelveth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth" };
         public static bool TryParse(List<Token> words, out QueryParam result)
         {
             if (words[0].Content == "last")
@@ -29,10 +29,10 @@ namespace PuzzleGame.Language
                 result = new OrdinalParam(1, true, words.Pop());
                 return true;
             }
-            if (Ordinal.Contains(words[0].Content))
+            if (OrdinalWords.Contains(words[0].Content))
             {
                 var ord = words.Pop();
-                var n = Ordinal.IndexOf(ord.Content);
+                var n = OrdinalWords.IndexOf(ord.Content);
                 if (words.Count > 0 && words[0].Content == "last")
                 {
                     var last = words.Pop();
@@ -49,7 +49,7 @@ namespace PuzzleGame.Language
             return false;
         }
 
-        public static new List<PriorityName> ValuesStartingWith(string prefix = "")
+        public static List<PriorityName> ValuesStartingWith(string prefix = "")
         {
             var result = new List<PriorityName>(){
                 new PriorityName("first", 0),
@@ -59,12 +59,14 @@ namespace PuzzleGame.Language
 
             for (int i = 2; i <= 20; i++)
             {
-                result.Add(new PriorityName(Ordinal[i], i * 2));
+                result.Add(new PriorityName(OrdinalWords[i], i * 2));
 
-                result.Add(new PriorityName(Ordinal[i] + " last", i * 2 + 1));
+                result.Add(new PriorityName(OrdinalWords[i] + " last", i * 2 + 1));
 
             }
             return result.Where(i => i.Name.StartsWith(prefix)).ToList();
         }
+
+        public override string ToCode() => "ordinal todo";
     }
 }

@@ -89,5 +89,7 @@ namespace PuzzleGame.Language
                 }
             }
         }
+
+        public override string ToCode() => String.Join(", ", Colors).ToLower();
     }
 }
