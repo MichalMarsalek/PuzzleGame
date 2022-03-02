@@ -34,8 +34,8 @@
             this.richTextBoxGridSetup = new System.Windows.Forms.RichTextBox();
             this.richTextBoxRules = new System.Windows.Forms.RichTextBox();
             this.richTextBoxDebug = new System.Windows.Forms.RichTextBox();
-            this.grid = new PuzzleGame.Grid();
             this.buttonFormat = new System.Windows.Forms.Button();
+            this.grid = new PuzzleGame.Grid();
             this.SuspendLayout();
             // 
             // label1
@@ -100,6 +100,17 @@
             this.richTextBoxDebug.TabIndex = 5;
             this.richTextBoxDebug.Text = "";
             // 
+            // buttonFormat
+            // 
+            this.buttonFormat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFormat.Location = new System.Drawing.Point(601, 313);
+            this.buttonFormat.Name = "buttonFormat";
+            this.buttonFormat.Size = new System.Drawing.Size(75, 23);
+            this.buttonFormat.TabIndex = 6;
+            this.buttonFormat.Text = "Format";
+            this.buttonFormat.UseVisualStyleBackColor = true;
+            this.buttonFormat.Click += new System.EventHandler(this.buttonFormat_Click);
+            // 
             // grid
             // 
             this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -111,16 +122,6 @@
             this.grid.Size = new System.Drawing.Size(593, 621);
             this.grid.TabIndex = 0;
             this.grid.MouseUp += new System.Windows.Forms.MouseEventHandler(this.grid_MouseUp);
-            // 
-            // buttonFormat
-            // 
-            this.buttonFormat.Location = new System.Drawing.Point(601, 313);
-            this.buttonFormat.Name = "buttonFormat";
-            this.buttonFormat.Size = new System.Drawing.Size(75, 23);
-            this.buttonFormat.TabIndex = 6;
-            this.buttonFormat.Text = "Format";
-            this.buttonFormat.UseVisualStyleBackColor = true;
-            this.buttonFormat.Click += new System.EventHandler(this.buttonFormat_Click);
             // 
             // Form1
             // 

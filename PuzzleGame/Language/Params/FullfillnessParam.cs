@@ -18,12 +18,12 @@ namespace PuzzleGame.Language
         {
             if (words[0].Content == "met")
             {
-                result = new ClosednessParam(false, words.Pop());
+                result = new FullfillnessParam(true, words.Pop());
                 return true;
             }
             if (words[0].Content == "broken")
             {
-                result = new ClosednessParam(true, words.Pop());
+                result = new FullfillnessParam(false, words.Pop());
                 return true;
             }
             result = null;

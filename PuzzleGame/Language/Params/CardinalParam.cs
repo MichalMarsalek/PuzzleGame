@@ -91,13 +91,13 @@ namespace PuzzleGame.Language
 
         public override string ToString()
         {
-            string result = Amount.ToString();
+            string result = CardinalWords[Amount].ToString();
             if (IsEach) result = "each";
             if (IsExact) result = "exactly " + result;
             if (IsOther) result += " other";
             return result;
         }
 
-        public override string ToCode() => CardinalWords.ToString(); //TODO
+        public override string ToCode() => ToString(); //TODO
     }
 }

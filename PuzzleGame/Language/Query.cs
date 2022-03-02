@@ -96,6 +96,12 @@ namespace PuzzleGame.Language
                     {
                         lastArg.Add(words[codePtr]);
                         codePtr++;
+                        if(codePtr == words.Count)
+                        {
+                            args.Add(lastArg);
+                            lastArg = new List<Token>();
+                            sgnPtr++;
+                        }
                     }
                     else if(function.Words[sgnPtr] == "_"){
                         args.Add(lastArg);

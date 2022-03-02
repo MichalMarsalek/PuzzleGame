@@ -35,7 +35,7 @@ namespace PuzzleGame.Language
         public string ToCode()
         {
             string res = String.Join("\r\n", Rules.Select(i => i.ToCode().FirstLetterToUpper() + "."));
-            string obj = FinalObjective.ToCode();
+            string obj = FinalObjective.ToCode().FirstLetterToUpper() + ".";
             if (obj != "Each rule is met.")
                 res += "\r\n" + obj;
             return res;

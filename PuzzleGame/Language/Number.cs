@@ -29,6 +29,8 @@ namespace PuzzleGame.Language
         public Number Div(Number other) => new Number(Value / other.Value);
         public Number Mod(Number other) => new Number(Value % other.Value);
         public Number FloorDiv(Number other) => new Number((Value - Value % other.Value) / other.Value);
+        public Number Pow(Number other) => new Number(Math.Pow(Value, other.Value));
+        public Number Root(Number other) => new Number(Math.Pow(other.Value, 1.0/Value));
 
         public bool Equal(Number other) => Math.Abs(Value - other.Value) < prec;
         public bool NotEqual(Number other) => !Equal(other);

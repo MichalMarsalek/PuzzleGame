@@ -115,7 +115,7 @@ namespace PuzzleGame.Language
             if (rules.Last().ContainsQuery("_ rule is _"))
             {
                 finalObjective = rules.Pop(rules.Count - 1);
-                if (finalObjective.ContainsQuery("_ rules is _", false))
+                if (finalObjective.ContainsQuery("_ rule is _", false))
                 {
                     throw new Language.Exception("Objective cannot query the grid directly, only trough the rules.");
                 }
@@ -161,7 +161,7 @@ namespace PuzzleGame.Language
                     }
                     else
                     {
-                        prevValue = new BinaryOperation(prevOp, prevValue, n, prevOpToken);
+                        prevValue = new Operator(prevOp, prevValue, n, prevOpToken);
                         prevOp = null;
                     }
                 }
@@ -169,9 +169,14 @@ namespace PuzzleGame.Language
                 {
                     if(i == 0 || !(prevOp is null))
                     {
-                        if(tokens[i].Content == "-")
+                        if (tokens[i].Content == "-")
                         {
                             tokens.Insert(i, new Token(TokenTypes.Number, tokens[i].Start, 1, "0"));
+                            continue;
+                        }
+                        if (tokens[i].Content == "√")
+                        {
+                            tokens.Insert(i, new Token(TokenTypes.Number, tokens[i].Start, 1, "2"));
                             continue;
                         }
                         else
@@ -205,7 +210,7 @@ namespace PuzzleGame.Language
                     }
                     else
                     {
-                        prevValue = new BinaryOperation(prevOp, prevValue, q, prevOpToken);
+                        prevValue = new Operator(prevOp, prevValue, q, prevOpToken);
                         prevOp = null;
                     }
                 }

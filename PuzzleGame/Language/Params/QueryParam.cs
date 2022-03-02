@@ -12,6 +12,7 @@ namespace PuzzleGame.Language
 
         public static QueryParam ParseParam(List<Token> words)
         {
+            words = words.Select(i => new Token(i.Type, i.Start, i.Length, i.Content.ToLower())).ToList(); //TODO move elsewhere maybe
             var result = ParseParam0(words);
             if(words.Count > 0)
             {
@@ -48,13 +49,15 @@ namespace PuzzleGame.Language
             if (AnglePropertyParam.TryParse(words, out result)) return result;
             if (PolygonPropertyParam.TryParse(words, out result)) return result;
             if (ClosednessParam.TryParse(words, out result)) return result;
+            if (FullfillnessParam.TryParse(words, out result)) return result;
             //if (TransformPropertyParam.TryParse(words, out result)) return result; TODO
-            //if (SamenessParam.TryParse(words, out result)) return result;
+            //if (SamenessParam.TryParse(words, out result)) return result; TODO
             throw new Language.Exception("Unknown parameter \"" + String.Join(" ", words) + "\".");
         }
 
         public static List<PriorityName> GetAllValuesStartingWith(string prefix)
         {
+            prefix = prefix.ToLower(); //TODO move elsewhere maybe
             var names = new List<PriorityName>();
             foreach (var name in ColorParam.ValuesStartingWith(prefix)) names.Add(name);
             foreach (var name in CardinalParam.ValuesStartingWith(prefix)) names.Add(name);

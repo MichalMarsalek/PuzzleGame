@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Language\Params\AnglePropertyParam.cs" />
-    <Compile Include="Language\BinaryOperation.cs" />
+    <Compile Include="Language\Operator.cs" />
     <Compile Include="Language\Params\CardinalColorParam.cs" />
     <Compile Include="Language\Params\CardinalOrdinalParam.cs" />
     <Compile Include="Language\Params\CardinalParam.cs" />

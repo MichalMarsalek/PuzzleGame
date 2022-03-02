@@ -98,6 +98,14 @@ namespace PuzzleGame
             }[color];
         }
 
+        public static Color EdgeColor(Colors color, float dist)
+        {
+            if (color == Colors.White)
+            {
+                return Extensions.ChangeColorBrightness(Extensions.BaseColor(color), -0.5f + Math.Min(3f, dist) / 3f * 1.3f);
+            }
+            return Extensions.ChangeColorBrightness(Extensions.BaseColor(color), -0.2f);
+        }
         public static Color EdgeColor(Colors color)
         {
             return Extensions.ChangeColorBrightness(Extensions.BaseColor(color), -0.2f);

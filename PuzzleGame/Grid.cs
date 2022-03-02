@@ -138,7 +138,7 @@ namespace PuzzleGame
             {
                 if (dot.Color == Colors.White)
                 {
-                    dot.Paint(g);
+                    dot.Paint(g, MouseLocation);
                 }
             }
             foreach (LineSegment seg in LineSegments)
@@ -153,7 +153,7 @@ namespace PuzzleGame
             {
                 if (dot.Color != Colors.White)
                 {
-                    dot.Paint(g);
+                    dot.Paint(g, MouseLocation);
                 }
             }
         }
@@ -238,8 +238,8 @@ namespace PuzzleGame
                         }
                     }
                 }
-                canvas.Refresh();
             }
+            canvas.Refresh();
         }
 
         private void canvas_MouseUp(object sender, MouseEventArgs e)

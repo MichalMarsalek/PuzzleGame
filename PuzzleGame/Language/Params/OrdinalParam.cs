@@ -67,6 +67,16 @@ namespace PuzzleGame.Language
             return result.Where(i => i.Name.StartsWith(prefix)).ToList();
         }
 
-        public override string ToCode() => "ordinal todo";
+        public override string ToString()
+        {
+            if (Last)
+            {
+                if (Order == 1) return "last";
+                return OrdinalWords[Order] + " last";
+            }
+            return OrdinalWords[Order];
+        }
+
+        public override string ToCode() => ToString();
     }
 }
