@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimatedValue.cs" />
     <Compile Include="Language\Params\AnglePropertyParam.cs" />
     <Compile Include="Language\Operator.cs" />
     <Compile Include="Language\Params\CardinalColorParam.cs" />

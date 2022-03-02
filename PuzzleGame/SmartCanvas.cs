@@ -20,11 +20,23 @@ namespace PuzzleGame
         public float yPadding { get; private set; }                                  //Posun ve svislém směru
         public PointF MouseLocation { get; private set; }   //Poslední známá pozice myši, ve virtuálních souřadnicích plátna
 
+        private Timer timer;
+        private const int fps = 50;
+
         public SmartCanvas()
         {
             InitializeComponent();
             DoubleBuffered = true;
             Recalculate();
+            Refresh();
+            timer = new Timer();
+            timer.Interval = 1000 / fps;
+            timer.Enabled = true;
+            timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
             Refresh();
         }
 
@@ -61,7 +73,6 @@ namespace PuzzleGame
                 Recalculate();
             }
         }
-
         public void ResetOrigin()
         {
             Origin = new PointF(0, 0);

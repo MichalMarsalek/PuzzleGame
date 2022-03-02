@@ -19,6 +19,9 @@ namespace PuzzleGame
         public Line[] Lines { get; private set; }
         public List<LineSegment> LineSegments{get; private set;}
         public Line ActiveLine { get; private set; }
+        public Color BackgroundColor { get; set; }
+        public AnimatedValue BackgroundColorAdjustment { get; set; }
+
         public float snap = 0.2f;
         private bool activeLineJustCreated;
 
@@ -55,7 +58,9 @@ namespace PuzzleGame
             Dots = new List<Dot>();
             Lines = new Line[Enum.GetNames(typeof(Colors)).Length - 1];
             LineSegments = new List<LineSegment>();
-            BackColor = Color.White;
+            BackgroundColor = Color.Red;
+            BackgroundColorAdjustment = new AnimatedValue(0.9, 0.1, 0.2, true);
+
             InitializeComponent();
         }
 
@@ -131,9 +136,16 @@ namespace PuzzleGame
             return null;
         }
 
+        private void PaintBackground(Graphics g)
+        {
+            Color c = Extensions.ChangeColorBrightness(BackgroundColor, (float)BackgroundColorAdjustment.GetValue());
+            g.FillRegion(new SolidBrush(c), g.Clip);
+        }
+
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+            PaintBackground(g);
             foreach (Dot dot in Dots)
             {
                 if (dot.Color == Colors.White)
