@@ -23,14 +23,18 @@ namespace PuzzleGame
             Color = color;
         }
 
-        internal void Paint(Graphics g, Vector mouseLoc)
+        internal void Paint(Graphics g, Color overrideEdge)
         {
-            float dist = (mouseLoc - Position).Norm2();
-            Color edge = Extensions.EdgeColor(Color, dist);
-            Color fill = Extensions.FillColor(Color);
+            //Color edge = Extensions.EdgeColor(Color);
+            //Color fill = Extensions.FillColor(Color);
             float size = Color == Colors.White ? 0.05f : 0.1f;
-            g.FillCircle(edge, Position, size);
+            g.FillCircle(overrideEdge, Position, size);
             //g.FillCircle(fill, Position, size - 0.01f);
+        }
+        internal void Paint(Graphics g)
+        {
+            Color edge = Util.EdgeColor(Color);
+            Paint(g, edge);
         }
     }
 }

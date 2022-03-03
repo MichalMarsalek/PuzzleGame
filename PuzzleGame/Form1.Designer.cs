@@ -35,7 +35,7 @@
             this.richTextBoxRules = new System.Windows.Forms.RichTextBox();
             this.richTextBoxDebug = new System.Windows.Forms.RichTextBox();
             this.buttonFormat = new System.Windows.Forms.Button();
-            this.grid = new PuzzleGame.Grid();
+            this.grid = new PuzzleGame.Grid2();
             this.SuspendLayout();
             // 
             // label1
@@ -117,10 +117,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grid.BackColor = System.Drawing.Color.White;
+            this.grid.BackgroundColor = System.Drawing.Color.Red;
             this.grid.Location = new System.Drawing.Point(1, -1);
             this.grid.Name = "grid";
             this.grid.Size = new System.Drawing.Size(593, 621);
             this.grid.TabIndex = 0;
+            this.grid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.grid_MouseMove_1);
             this.grid.MouseUp += new System.Windows.Forms.MouseEventHandler(this.grid_MouseUp);
             // 
             // Form1
@@ -146,7 +148,7 @@
 
         #endregion
 
-        private Grid grid;
+        private Grid2 grid;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxFiles;

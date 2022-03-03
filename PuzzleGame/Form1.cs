@@ -65,7 +65,7 @@ namespace PuzzleGame
                 objective = new Language.Parser().ParseObjective(richTextBoxRules.Text);
                 types = objective.EvaluateTypes();
             }
-            catch(Language.Exception ex)
+            catch (Language.Exception ex)
             {
                 richTextBoxDebug.Text = ex.Message;
                 objective = null;
@@ -75,7 +75,7 @@ namespace PuzzleGame
             {
                 var res = objective.EvaluateValues(new Language.GridState(grid));
                 richTextBoxDebug.Text = String.Join("\r\n", res);
-                if(types.All(i => i == typeof(bool)))
+                if (types.All(i => i == typeof(bool)))
                     richTextBoxDebug.Text += "\r\nFinal value: " + objective.IsMet(res).ToString();
             }
             catch (Language.Exception ex)
@@ -97,8 +97,13 @@ namespace PuzzleGame
 
         private void buttonFormat_Click(object sender, EventArgs e)
         {
-            if(objective != null)
+            if (objective != null)
                 richTextBoxRules.Text = objective.ToCode();
+        }
+
+        private void grid_MouseMove_1(object sender, MouseEventArgs e)
+        {
+            Text = grid.MouseLocation.ToString();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PuzzleGame
 {
-    partial class SmartCanvas
+    partial class SmartCanvas2
     {
         /// <summary> 
         /// Required designer variable.

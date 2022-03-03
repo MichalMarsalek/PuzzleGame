@@ -35,8 +35,8 @@ namespace PuzzleGame
 
         internal void Paint(Graphics g)
         {
-            Color edge = Extensions.EdgeColor(Line.Color);
-            Color fill = Extensions.FillColor(Line.Color);
+            Color edge = Util.EdgeColor(Line.Color);
+            Color fill = Util.FillColor(Line.Color);
             g.DrawLine(new Pen(edge, 0.2f), A.Position, B.Position);
             g.DrawLine(new Pen(fill, 0.16f), A.Position, B.Position);
             Line.RepaintPreviousFill(g, A);

@@ -13,7 +13,7 @@ namespace PuzzleGame.Language
         public Dictionary<Colors, Line> Polygons { get; private set; }
         public List<bool> Rules { get; private set; }
 
-        public GridState(Grid grid)
+        public GridState(Grid2 grid)
         {
             Dots = grid.Dots;
             Lines = grid.Lines.Where(i => i != null).ToDictionary(i => i.Color, i => i);

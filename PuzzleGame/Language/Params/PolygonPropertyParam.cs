@@ -30,7 +30,7 @@ namespace PuzzleGame.Language
             }
         }
         public static List<PriorityName> ValuesStartingWith(string prefix = "")
-            => Extensions.Get<PolygonProperties>().Select(i => new PriorityName(i.ToString().ToLower(), 0))
+            => Util.Get<PolygonProperties>().Select(i => new PriorityName(i.ToString().ToLower(), 0))
             .Where(i => i.Name.StartsWith(prefix)).ToList();
 
         public override string ToCode() => Property.ToString().ToLower();

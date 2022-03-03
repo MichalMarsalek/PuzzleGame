@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace PuzzleGame
 {
-    public partial class Grid : UserControl
+    public partial class Grid2 : UserControl
     {
 
         public List<Dot> Dots { get; private set; }
@@ -20,7 +20,7 @@ namespace PuzzleGame
         public List<LineSegment> LineSegments{get; private set;}
         public Line ActiveLine { get; private set; }
         public Color BackgroundColor { get; set; }
-        public AnimatedValue BackgroundColorAdjustment { get; set; }
+        private List<BackgroundLayer> Backgrounds;
 
         public float snap = 0.2f;
         private bool activeLineJustCreated;
@@ -53,13 +53,33 @@ namespace PuzzleGame
             }
         }
 
-        public Grid() : base()
+        public Grid2() : base()
         {
             Dots = new List<Dot>();
             Lines = new Line[Enum.GetNames(typeof(Colors)).Length - 1];
             LineSegments = new List<LineSegment>();
             BackgroundColor = Color.Red;
-            BackgroundColorAdjustment = new AnimatedValue(0.9, 0.1, 0.2, true);
+            Backgrounds = new List<BackgroundLayer>()
+            {
+                new BackgroundLayer(new AnimatedColor(
+                    new AnimatedDouble(0,1,0.1,false),
+                    new AnimatedDouble(0), //1
+                    new AnimatedDouble(0.5),
+                    new AnimatedDouble(0.5)
+                ))
+            };
+            ShapeBackgroundLayer square = new ShapeBackgroundLayer(BackgroundShapes.Square,
+                new AnimatedColor(
+                    new AnimatedDouble(0.333),
+                    new AnimatedDouble(0),
+                    new AnimatedDouble(0.5),
+                    new AnimatedDouble(0.1, 0.1, 1, true)
+                )
+            );
+            square.Scale = new AnimatedDouble(0.2, 0.05, 1, true, true);
+            square.TransX = new AnimatedDouble(0, 0.2, 1, true, true);
+            square.TransY = new AnimatedDouble(-0.5, 11, 0.02, false, true);
+            Backgrounds.Add(square);
 
             InitializeComponent();
         }
@@ -136,21 +156,21 @@ namespace PuzzleGame
             return null;
         }
 
-        private void PaintBackground(Graphics g)
-        {
-            Color c = Extensions.ChangeColorBrightness(BackgroundColor, (float)BackgroundColorAdjustment.GetValue());
-            g.FillRegion(new SolidBrush(c), g.Clip);
-        }
-
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            PaintBackground(g);
+            foreach(var bg in Backgrounds)
+            {
+                bg.Paint(g);
+            }
             foreach (Dot dot in Dots)
             {
                 if (dot.Color == Colors.White)
                 {
-                    dot.Paint(g, MouseLocation);
+                    Color res = BackgroundColor;
+                    float dist = (MouseLocation - dot.Position).Norm2();
+                    res = Color.FromArgb(64 - (int)(Math.Min(3f, dist) / 3f * 64), res);
+                    dot.Paint(g, res);
                 }
             }
             foreach (LineSegment seg in LineSegments)
@@ -165,7 +185,7 @@ namespace PuzzleGame
             {
                 if (dot.Color != Colors.White)
                 {
-                    dot.Paint(g, MouseLocation);
+                    dot.Paint(g);
                 }
             }
         }

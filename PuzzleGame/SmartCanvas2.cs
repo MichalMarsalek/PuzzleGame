@@ -12,7 +12,7 @@ using System.Drawing.Text;
 
 namespace PuzzleGame
 {
-    public partial class SmartCanvas : Panel
+    public partial class SmartCanvas2 : Panel
     {
 
         public float scaleQ { get; private set; }                              //Zvětšení
@@ -23,7 +23,7 @@ namespace PuzzleGame
         private Timer timer;
         private const int fps = 50;
 
-        public SmartCanvas()
+        public SmartCanvas2()
         {
             InitializeComponent();
             DoubleBuffered = true;

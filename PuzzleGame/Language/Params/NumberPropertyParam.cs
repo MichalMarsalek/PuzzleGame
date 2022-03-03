@@ -30,7 +30,7 @@ namespace PuzzleGame.Language
             }
         }
         public static new List<PriorityName> AllValues()
-            => Extensions.Get<NumberProperties>().Select(i => new PriorityName(i.ToString(), 0)).ToList();
+            => Util.Get<NumberProperties>().Select(i => new PriorityName(i.ToString(), 0)).ToList();
 
         public override string ToCode() => Property.ToString().ToLower();
     }

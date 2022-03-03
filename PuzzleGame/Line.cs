@@ -21,8 +21,8 @@ namespace PuzzleGame
 
         internal void Paint(Graphics g)
         {
-            Color edge = Extensions.EdgeColor(Color);
-            Color fill = Extensions.FillColor(Color);
+            Color edge = Util.EdgeColor(Color);
+            Color fill = Util.FillColor(Color);
             int len = Dots.Count;
             g.FillCircle(edge, Dots[0].Position, 0.2f);
             if (!(TemporaryEnd is null))
@@ -38,8 +38,8 @@ namespace PuzzleGame
         {
             if (Dots.Count > 1)
             {
-                Color edge = Extensions.EdgeColor(Color);
-                Color fill = Extensions.FillColor(Color);
+                Color edge = Util.EdgeColor(Color);
+                Color fill = Util.FillColor(Color);
                 for(int i = 0; i < Dots.Count-1; i++)
                 {
                     if(Dots[i+1] == dot)

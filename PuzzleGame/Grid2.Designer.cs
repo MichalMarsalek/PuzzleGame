@@ -1,6 +1,6 @@
 ﻿namespace PuzzleGame
 {
-    partial class Grid
+    partial class Grid2
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Grid));
-            this.canvas = new PuzzleGame.SmartCanvas();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Grid2));
+            this.canvas = new PuzzleGame.SmartCanvas2();
             this.SuspendLayout();
             // 
             // canvas
@@ -62,6 +62,6 @@
 
         #endregion
 
-        private SmartCanvas canvas;
+        private SmartCanvas2 canvas;
     }
 }
