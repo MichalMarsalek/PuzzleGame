@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +11,47 @@ namespace PuzzleGame
     public static class Util
     {
         public static Random Random = new Random();
-        public static void FillCircle(this Graphics g, Color color, Vector center, float radius)
+
+        private static Matrix transform;
+
+        public static void RotateAround(this Graphics g, Vector pos, float angle)
         {
-            g.DrawCircle(new SolidBrush(color), center, radius);
+            transform = g.Transform;
+            g.TranslateTransform(pos.X, pos.Y);
+            g.RotateTransform(angle);
+            g.TranslateTransform(-pos.X, -pos.Y);
         }
-        public static void DrawCircle(this Graphics g, Brush brush, Vector center, float radius)
+        public static void PartialTransformReset(this Graphics g)
         {
-            g.FillEllipse(brush, new RectangleF((center - new Vector(radius, radius)).ToPointF(), new SizeF(2 * radius, 2 * radius)));
+            g.Transform = transform;
+        }
+
+        public static void DrawCircle(this Graphics g, Color color, Vector center, float radius)
+        {
+            g.DrawEllipse(new SolidBrush(color), center, radius, radius);
+        }
+        public static void DrawEllipse(this Graphics g, Color color, Vector center, float radius1, float radius2)
+        {
+            g.DrawEllipse(new SolidBrush(color), center, radius1, radius2);
+        }
+        public static void DrawEllipse(this Graphics g, Brush brush, Vector center, float radius1, float radius2)
+        {
+            g.FillEllipse(brush, new RectangleF((center - new Vector(radius1, radius2)).ToPointF(), new SizeF(2 * radius1, 2 * radius2)));
+        }
+
+        public static void DrawSquare(this Graphics g, Color color, Vector center, float a, float angle)
+        {
+            g.DrawRectangle(new SolidBrush(color), center, a, a, angle);
+        }
+        public static void DrawRectangle(this Graphics g, Color color, Vector center, float a, float b, float angle)
+        {
+            g.DrawRectangle(new SolidBrush(color), center, a, b, angle);
+        }
+        public static void DrawRectangle(this Graphics g, Brush brush, Vector center, float a, float b, float angle)
+        {
+            g.RotateAround(center, angle);
+            g.FillRectangle(brush, new RectangleF((center - new Vector(a, b)).ToPointF(), new SizeF(2 * a, 2 * b)));
+            g.PartialTransformReset();
         }
 
         public static void DrawLine(this Graphics g, Pen pen, Vector start, Vector end, bool round = true)

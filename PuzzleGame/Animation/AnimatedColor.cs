@@ -13,8 +13,7 @@ namespace PuzzleGame
         public AnimatedDouble Saturation { get; private set; }
         public AnimatedDouble Lightness { get; private set; }
         public AnimatedDouble Alpha { get; private set; }
-        private bool isConstant;
-        private Color constantColor;
+        public bool IsSynced { get => Hue.IsSynced && Saturation.IsSynced && Lightness.IsSynced && Alpha.IsSynced; }
 
         public AnimatedColor(AnimatedDouble hue, AnimatedDouble saturation, AnimatedDouble lightness, AnimatedDouble alpha)
         {
@@ -22,14 +21,10 @@ namespace PuzzleGame
             Saturation = saturation;
             Lightness = lightness;
             Alpha = alpha;
-            isConstant = hue.IsConstant && saturation.IsConstant && lightness.IsConstant && alpha.IsConstant;
-            if (isConstant)
-                constantColor = Util.ColorFromHsla(hue.Get(), saturation.Get(), lightness.Get(), alpha.Get());
         }
 
         public Color Get(int uid=0)
         {
-            if (isConstant) return constantColor;
             return Util.ColorFromHsla(Hue.Get(uid), Saturation.Get(uid), Lightness.Get(uid), Alpha.Get(uid));
         }
     }

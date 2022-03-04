@@ -62,24 +62,46 @@ namespace PuzzleGame
             Backgrounds = new List<BackgroundLayer>()
             {
                 new BackgroundLayer(new AnimatedColor(
-                    new AnimatedDouble(0,1,0.1,false),
-                    new AnimatedDouble(0), //1
-                    new AnimatedDouble(0.5),
-                    new AnimatedDouble(0.5)
+                    new RotateDouble(0,1,10),
+                    0,
+                    0.5,
+                    0.5
                 ))
             };
-            ShapeBackgroundLayer square = new ShapeBackgroundLayer(BackgroundShapes.Square,
+            ShapeBackgroundLayer circle = new ShapeBackgroundLayer(BackgroundShapes.Circle,
                 new AnimatedColor(
-                    new AnimatedDouble(0.333),
-                    new AnimatedDouble(0),
-                    new AnimatedDouble(0.5),
-                    new AnimatedDouble(0.1, 0.1, 1, true)
+                    1.0/3.0,
+                    0,
+                    0.5,
+                    new SineDouble(0.5, 0.5, 10)
                 )
             );
-            square.Scale = new AnimatedDouble(0.2, 0.05, 1, true, true);
-            square.TransX = new AnimatedDouble(0, 0.2, 1, true, true);
-            square.TransY = new AnimatedDouble(-0.5, 11, 0.02, false, true);
-            Backgrounds.Add(square);
+            circle.Scale = new SineDouble(0.2, 0.05, 10, 0, 1, false);
+            circle.TransX = new SineDouble(0, 1, 10, 0, 0, false);
+            circle.TransY = new RotateDouble(-0.5, 11, 10, 0, 0, false);
+
+            ShapeBackgroundLayer square = new ShapeBackgroundLayer(BackgroundShapes.Square,
+                new AnimatedColor(
+                    new RotateDouble(0, 1, 2, 0, 0, false),
+                    0,//new HalfSineDouble(0, 1, 2, 40, 2, false),
+                    0.5,
+                    new HalfSineDouble(0.1, 0.5, 2, 40, 0, false)
+                )
+            );
+            square.Scale = new HalfSineDouble(0.9, -0.14, 2, 100, 0, false);
+            square.Rotation = new RotateDouble(0, 90, 2, 100, 0, false);
+            //Backgrounds.Add(square);
+
+
+            ShapeBackgroundLayer square2 = new ShapeBackgroundLayer(BackgroundShapes.Square,
+                new AnimatedColor(
+                    0,
+                    0,//new HalfSineDouble(0, 1, 2, 40, 2, false),
+                    0.5,
+                    new ConstantDouble(0.2, 0.1, 0, false)
+                )
+            );
+            Backgrounds.Add(square2);
 
             InitializeComponent();
         }

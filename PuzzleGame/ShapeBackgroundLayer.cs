@@ -24,22 +24,39 @@ namespace PuzzleGame
         public ShapeBackgroundLayer(BackgroundShapes shape, AnimatedColor color) : base(color)
         {
             Shape = shape;
-            Dist = new AnimatedDouble(1);
-            Scale = new AnimatedDouble(1);
-            Rotation = new AnimatedDouble(0);
-            TransX = new AnimatedDouble(0);
-            TransY = new AnimatedDouble(0);
+            Dist = new ConstantDouble(1);
+            Scale = new ConstantDouble(1);
+            Rotation = new ConstantDouble(0);
+            TransX = new ConstantDouble(0);
+            TransY = new ConstantDouble(0);
         }
 
         public override void Paint(Graphics g)
         {
-            for(int x = -20; x < 20; x++)
+            double distX = DistX.Get();
+            double distY = DistY.Get();
+            double transX = TransX.Get();
+            double transY = TransY.Get();
+            double scaleX = ScaleX.Get();
+            double scaleY = ScaleY.Get();
+            double rotation = Rotation.Get();
+            Color color = Color.Get();
+            for (int x = -20; x < 20; x++)
             {
                 for(int y = -20; y < 20; y++)
                 {
                     int uid = (x << 8) + (y << 16);
-                    Vector pos = new Vector(x * DistX.Get(uid) + TransX.Get(uid+1), y * DistY.Get(uid+2) + TransY.Get(uid+3));
-                    g.FillCircle(Color.Get(uid+4), pos, (float)ScaleX.Get(uid+5));
+                    double tx = TransX.IsSynced ? transX : TransX.Get(uid);
+                    double ty = TransY.IsSynced ? transY : TransY.Get(uid);
+                    Vector pos = new Vector(x * distX + tx, y * distY + ty);
+                    double rot = Rotation.IsSynced ? rotation : Rotation.Get(uid);
+                    Color col = Color.IsSynced ? color : Color.Get(uid);
+                    double sx = ScaleX.IsSynced ? scaleX : ScaleX.Get(uid);
+                    double sy = ScaleY.IsSynced ? scaleY : ScaleY.Get(uid);
+                    if (Shape == BackgroundShapes.Circle)
+                        g.DrawCircle(col, pos, (float)sx/2);
+                    else if (Shape == BackgroundShapes.Square)
+                        g.DrawRectangle(col, pos, (float)sx/2, (float)sy/2, (float)rot);
                 }
             }
         }

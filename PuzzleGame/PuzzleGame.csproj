@@ -45,9 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimatedColor.cs" />
-    <Compile Include="AnimatedDouble.cs" />
+    <Compile Include="AnimationPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnimationPicker.Designer.cs">
+      <DependentUpon>AnimationPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Animation\AnimatedColor.cs" />
+    <Compile Include="Animation\AnimatedDouble.cs" />
     <Compile Include="BackgroundLayer.cs" />
+    <Compile Include="Animation\ConstantDouble.cs" />
+    <Compile Include="Animation\HalfSineDouble.cs" />
+    <Compile Include="BackgroundEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BackgroundEditor.Designer.cs">
+      <DependentUpon>BackgroundEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Language\Params\AnglePropertyParam.cs" />
     <Compile Include="Language\Operator.cs" />
     <Compile Include="Language\Params\CardinalColorParam.cs" />
@@ -56,7 +70,15 @@
     <Compile Include="Language\CharacterStream.cs" />
     <Compile Include="Language\Params\ClosednessParam.cs" />
     <Compile Include="Dot.cs" />
+    <Compile Include="Animation\RotateDouble.cs" />
+    <Compile Include="NumericUpDownWithUnit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NumericUpDownWithUnit.Designer.cs">
+      <DependentUpon>NumericUpDownWithUnit.cs</DependentUpon>
+    </Compile>
     <Compile Include="ShapeBackgroundLayer.cs" />
+    <Compile Include="Animation\SineDouble.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -111,6 +133,12 @@
     <Compile Include="Language\Query.cs" />
     <Compile Include="Language\Token.cs" />
     <Compile Include="Vector.cs" />
+    <EmbeddedResource Include="AnimationPicker.resx">
+      <DependentUpon>AnimationPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BackgroundEditor.resx">
+      <DependentUpon>BackgroundEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

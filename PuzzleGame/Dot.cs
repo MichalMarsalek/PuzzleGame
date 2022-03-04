@@ -28,7 +28,7 @@ namespace PuzzleGame
             //Color edge = Extensions.EdgeColor(Color);
             //Color fill = Extensions.FillColor(Color);
             float size = Color == Colors.White ? 0.05f : 0.1f;
-            g.FillCircle(overrideEdge, Position, size);
+            g.DrawCircle(overrideEdge, Position, size);
             //g.FillCircle(fill, Position, size - 0.01f);
         }
         internal void Paint(Graphics g)
