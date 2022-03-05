@@ -43,6 +43,7 @@ namespace PuzzleGame
                 comboBoxFiles.Items.Add(file);
             }
             comboBoxFiles.SelectedItem = "grids\\default.txt";
+            grid.Backgrounds = backgroundLayerEditor.Layers;
         }
 
         private void grid_MouseUp(object sender, MouseEventArgs e)
@@ -99,6 +100,7 @@ namespace PuzzleGame
         {
             if (objective != null)
                 richTextBoxRules.Text = objective.ToCode();
+            grid.Backgrounds = backgroundLayerEditor.Layers;
         }
 
         private void grid_MouseMove_1(object sender, MouseEventArgs e)

@@ -16,8 +16,16 @@ namespace PuzzleGame
         public string Unit { get; set; }
         protected override void UpdateEditText()
         {
-            ChangingText = true;
-            Text = $"{Value} {Unit}";
+            if (Unit != "")
+            {
+                ChangingText = true;
+                Text = $"{Value} {Unit}";
+            }
+            else
+            {
+                ChangingText = true;
+                Text = $"{Value}";
+            }
         }
     }
 }

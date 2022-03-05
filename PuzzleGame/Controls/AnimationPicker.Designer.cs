@@ -75,6 +75,7 @@
             this.checkBoxSynced.TabIndex = 4;
             this.checkBoxSynced.Text = "synced";
             this.checkBoxSynced.UseVisualStyleBackColor = true;
+            this.checkBoxSynced.CheckedChanged += new System.EventHandler(this.checkBoxSynced_CheckedChanged);
             // 
             // comboBoxAnimation
             // 
@@ -139,26 +140,54 @@
             this.numericUpDownGroup.Name = "numericUpDownGroup";
             this.numericUpDownGroup.Size = new System.Drawing.Size(38, 20);
             this.numericUpDownGroup.TabIndex = 12;
+            this.numericUpDownGroup.ValueChanged += new System.EventHandler(this.numericUpDownGroup_ValueChanged);
             // 
             // numericUpDownWithUnitWait
             // 
             this.numericUpDownWithUnitWait.Location = new System.Drawing.Point(141, 24);
+            this.numericUpDownWithUnitWait.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.numericUpDownWithUnitWait.Name = "numericUpDownWithUnitWait";
             this.numericUpDownWithUnitWait.Size = new System.Drawing.Size(55, 20);
             this.numericUpDownWithUnitWait.TabIndex = 10;
             this.numericUpDownWithUnitWait.Unit = "s";
+            this.numericUpDownWithUnitWait.ValueChanged += new System.EventHandler(this.numericUpDownWithUnitWait_ValueChanged);
             // 
             // numericUpDownWithUnitOver
             // 
             this.numericUpDownWithUnitOver.Location = new System.Drawing.Point(45, 25);
+            this.numericUpDownWithUnitOver.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDownWithUnitOver.Name = "numericUpDownWithUnitOver";
             this.numericUpDownWithUnitOver.Size = new System.Drawing.Size(55, 20);
             this.numericUpDownWithUnitOver.TabIndex = 9;
             this.numericUpDownWithUnitOver.Unit = "s";
+            this.numericUpDownWithUnitOver.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownWithUnitOver.ValueChanged += new System.EventHandler(this.numericUpDownWithUnitOver_ValueChanged);
             // 
             // numericUpDownWithUnitVariation
             // 
             this.numericUpDownWithUnitVariation.Location = new System.Drawing.Point(141, 3);
+            this.numericUpDownWithUnitVariation.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownWithUnitVariation.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            -2147483648});
             this.numericUpDownWithUnitVariation.Name = "numericUpDownWithUnitVariation";
             this.numericUpDownWithUnitVariation.Size = new System.Drawing.Size(55, 20);
             this.numericUpDownWithUnitVariation.TabIndex = 8;
@@ -195,6 +224,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.Name = "AnimationPicker";
             this.Size = new System.Drawing.Size(354, 48);
+            this.Load += new System.EventHandler(this.AnimationPicker_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWithUnitWait)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWithUnitOver)).EndInit();

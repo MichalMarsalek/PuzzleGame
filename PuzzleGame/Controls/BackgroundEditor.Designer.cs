@@ -31,6 +31,8 @@
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonDeleteLayer = new System.Windows.Forms.Button();
             this.buttonNewLayer = new System.Windows.Forms.Button();
+            this.baseLayerEditor = new PuzzleGame.BaseLayerEditor();
+            this.flowLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel
@@ -39,6 +41,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel.AutoScroll = true;
+            this.flowLayoutPanel.Controls.Add(this.baseLayerEditor);
             this.flowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
             this.flowLayoutPanel.Size = new System.Drawing.Size(516, 270);
@@ -64,15 +67,26 @@
             this.buttonNewLayer.UseVisualStyleBackColor = true;
             this.buttonNewLayer.Click += new System.EventHandler(this.buttonNewLayer_Click);
             // 
-            // BackgroundLayerPicker
+            // baseLayerEditor
+            // 
+            this.baseLayerEditor.AutoSize = true;
+            this.baseLayerEditor.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.baseLayerEditor.Location = new System.Drawing.Point(3, 3);
+            this.baseLayerEditor.Name = "baseLayerEditor";
+            this.baseLayerEditor.Size = new System.Drawing.Size(428, 90);
+            this.baseLayerEditor.TabIndex = 0;
+            // 
+            // BackgroundEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.buttonDeleteLayer);
             this.Controls.Add(this.buttonNewLayer);
             this.Controls.Add(this.flowLayoutPanel);
-            this.Name = "BackgroundLayerPicker";
+            this.Name = "BackgroundEditor";
             this.Size = new System.Drawing.Size(516, 301);
+            this.flowLayoutPanel.ResumeLayout(false);
+            this.flowLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -82,5 +96,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.Button buttonDeleteLayer;
         private System.Windows.Forms.Button buttonNewLayer;
+        private BaseLayerEditor baseLayerEditor;
     }
 }

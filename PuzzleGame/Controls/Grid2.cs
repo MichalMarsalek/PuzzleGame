@@ -20,7 +20,7 @@ namespace PuzzleGame
         public List<LineSegment> LineSegments{get; private set;}
         public Line ActiveLine { get; private set; }
         public Color BackgroundColor { get; set; }
-        private List<BackgroundLayer> Backgrounds;
+        public List<BackgroundLayer> Backgrounds { get; set; }
 
         public float snap = 0.2f;
         private bool activeLineJustCreated;

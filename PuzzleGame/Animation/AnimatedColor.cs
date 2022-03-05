@@ -25,7 +25,7 @@ namespace PuzzleGame
 
         public Color Get(int uid=0)
         {
-            return Util.ColorFromHsla(Hue.Get(uid), Saturation.Get(uid), Lightness.Get(uid), Alpha.Get(uid));
+            return Util.ColorFromHsla(Hue.Get(uid)/359.9, Saturation.Get(uid) / 100, Lightness.Get(uid) / 100, Alpha.Get(uid) / 100);
         }
     }
 }

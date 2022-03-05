@@ -45,10 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationPicker.cs">
+    <Compile Include="Controls\AnimationPicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="AnimationPicker.Designer.cs">
+    <Compile Include="Controls\AnimationPicker.Designer.cs">
       <DependentUpon>AnimationPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="Animation\AnimatedColor.cs" />
@@ -56,11 +56,17 @@
     <Compile Include="BackgroundLayer.cs" />
     <Compile Include="Animation\ConstantDouble.cs" />
     <Compile Include="Animation\HalfSineDouble.cs" />
-    <Compile Include="BackgroundEditor.cs">
+    <Compile Include="Controls\BackgroundEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BackgroundEditor.Designer.cs">
+    <Compile Include="Controls\BackgroundEditor.Designer.cs">
       <DependentUpon>BackgroundEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ShapeLayerEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ShapeLayerEditor.Designer.cs">
+      <DependentUpon>ShapeLayerEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Language\Params\AnglePropertyParam.cs" />
     <Compile Include="Language\Operator.cs" />
@@ -71,26 +77,32 @@
     <Compile Include="Language\Params\ClosednessParam.cs" />
     <Compile Include="Dot.cs" />
     <Compile Include="Animation\RotateDouble.cs" />
-    <Compile Include="NumericUpDownWithUnit.cs">
+    <Compile Include="Controls\BaseLayerEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BaseLayerEditor.Designer.cs">
+      <DependentUpon>BaseLayerEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NumericUpDownWithUnit.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="NumericUpDownWithUnit.Designer.cs">
+    <Compile Include="Controls\NumericUpDownWithUnit.Designer.cs">
       <DependentUpon>NumericUpDownWithUnit.cs</DependentUpon>
     </Compile>
     <Compile Include="ShapeBackgroundLayer.cs" />
     <Compile Include="Animation\SineDouble.cs" />
     <Compile Include="Util.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Controls\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Controls\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GridSetupCode.cs" />
-    <Compile Include="Grid2.cs">
+    <Compile Include="Controls\Grid2.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Grid2.Designer.cs">
+    <Compile Include="Controls\Grid2.Designer.cs">
       <DependentUpon>Grid2.cs</DependentUpon>
     </Compile>
     <Compile Include="Language\FunctionSignature.cs" />
@@ -124,26 +136,32 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SmartCanvas2.cs">
+    <Compile Include="Controls\SmartCanvas2.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SmartCanvas2.Designer.cs">
+    <Compile Include="Controls\SmartCanvas2.Designer.cs">
       <DependentUpon>SmartCanvas2.cs</DependentUpon>
     </Compile>
     <Compile Include="Language\Query.cs" />
     <Compile Include="Language\Token.cs" />
     <Compile Include="Vector.cs" />
-    <EmbeddedResource Include="AnimationPicker.resx">
+    <EmbeddedResource Include="Controls\AnimationPicker.resx">
       <DependentUpon>AnimationPicker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BackgroundEditor.resx">
+    <EmbeddedResource Include="Controls\BackgroundEditor.resx">
       <DependentUpon>BackgroundEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Controls\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Grid2.resx">
+    <EmbeddedResource Include="Controls\ShapeLayerEditor.resx">
+      <DependentUpon>ShapeLayerEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Grid2.resx">
       <DependentUpon>Grid2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BaseLayerEditor.resx">
+      <DependentUpon>BaseLayerEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

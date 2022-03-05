@@ -8,12 +8,12 @@ namespace PuzzleGame
 {
     public abstract class AnimatedDouble
     {
-        public double Base { get; protected set; }
-        public double Variation { get; protected set; }
-        public double Over { get; protected set; }
-        public double Wait { get; protected set; }
-        public int RandomGroup { get; protected set; }
-        public bool IsSynced { get; protected set; }
+        public double Base { get; set; }
+        public double Variation { get; set; }
+        public double Over { get; set; }
+        public double Wait { get; set; }
+        public int RandomGroup { get; set; }
+        public bool IsSynced { get; set; }
         public double Secs { get => (DateTime.Now - new DateTime(2022, 1, 1)).TotalMilliseconds / 1000.0; }
 
         public virtual double Get(int uid=0)

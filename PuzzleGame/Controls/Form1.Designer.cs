@@ -36,7 +36,7 @@
             this.richTextBoxDebug = new System.Windows.Forms.RichTextBox();
             this.buttonFormat = new System.Windows.Forms.Button();
             this.grid = new PuzzleGame.Grid2();
-            this.backgroundLayerPicker1 = new PuzzleGame.BackgroundEditor();
+            this.backgroundLayerEditor = new PuzzleGame.BackgroundEditor();
             this.SuspendLayout();
             // 
             // label1
@@ -126,19 +126,19 @@
             this.grid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.grid_MouseMove_1);
             this.grid.MouseUp += new System.Windows.Forms.MouseEventHandler(this.grid_MouseUp);
             // 
-            // backgroundLayerPicker1
+            // backgroundLayerEditor
             // 
-            this.backgroundLayerPicker1.Location = new System.Drawing.Point(631, 126);
-            this.backgroundLayerPicker1.Name = "backgroundLayerPicker1";
-            this.backgroundLayerPicker1.Size = new System.Drawing.Size(513, 301);
-            this.backgroundLayerPicker1.TabIndex = 8;
+            this.backgroundLayerEditor.Location = new System.Drawing.Point(631, 126);
+            this.backgroundLayerEditor.Name = "backgroundLayerEditor";
+            this.backgroundLayerEditor.Size = new System.Drawing.Size(513, 301);
+            this.backgroundLayerEditor.TabIndex = 8;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1188, 620);
-            this.Controls.Add(this.backgroundLayerPicker1);
+            this.Controls.Add(this.backgroundLayerEditor);
             this.Controls.Add(this.buttonFormat);
             this.Controls.Add(this.richTextBoxDebug);
             this.Controls.Add(this.richTextBoxRules);
@@ -165,7 +165,7 @@
         private System.Windows.Forms.RichTextBox richTextBoxRules;
         private System.Windows.Forms.RichTextBox richTextBoxDebug;
         private System.Windows.Forms.Button buttonFormat;
-        private BackgroundEditor backgroundLayerPicker1;
+        private BackgroundEditor backgroundLayerEditor;
     }
 }
 

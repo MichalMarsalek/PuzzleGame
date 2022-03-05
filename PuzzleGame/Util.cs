@@ -136,7 +136,9 @@ namespace PuzzleGame
                         break;
                 }
             }
-            return Color.FromArgb((int)(a * 255f), (int)(r * 255f), (int)(g * 255f), (int)(b * 255f));
+            int Bound(double x) => Math.Min(255, Math.Max(0, (int)(x * 255f)));
+
+            return Color.FromArgb(Bound(a), Bound(r), Bound(g), Bound(b));
         }
 
         public static void DrawString(this Graphics g, Vector p, string s, Font font, Brush b = null)
