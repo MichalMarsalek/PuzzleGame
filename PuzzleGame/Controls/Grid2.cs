@@ -15,11 +15,17 @@ namespace PuzzleGame
     public partial class Grid2 : UserControl
     {
 
-        public List<Dot> Dots { get; private set; }
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public List<Dot> Dots { get; set; }
         public Line[] Lines { get; private set; }
         public List<LineSegment> LineSegments{get; private set;}
         public Line ActiveLine { get; private set; }
         public Color BackgroundColor { get; set; }
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<BackgroundLayer> Backgrounds { get; set; }
 
         public float snap = 0.2f;
@@ -58,50 +64,7 @@ namespace PuzzleGame
             Dots = new List<Dot>();
             Lines = new Line[Enum.GetNames(typeof(Colors)).Length - 1];
             LineSegments = new List<LineSegment>();
-            BackgroundColor = Color.Red;
-            Backgrounds = new List<BackgroundLayer>()
-            {
-                new BackgroundLayer(new AnimatedColor(
-                    new RotateDouble(0,1,10),
-                    0,
-                    0.5,
-                    0.5
-                ))
-            };
-            ShapeBackgroundLayer circle = new ShapeBackgroundLayer(BackgroundShapes.Circle,
-                new AnimatedColor(
-                    1.0/3.0,
-                    0,
-                    0.5,
-                    new SineDouble(0.5, 0.5, 10)
-                )
-            );
-            circle.Scale = new SineDouble(0.2, 0.05, 10, 0, 1, false);
-            circle.TransX = new SineDouble(0, 1, 10, 0, 0, false);
-            circle.TransY = new RotateDouble(-0.5, 11, 10, 0, 0, false);
-
-            ShapeBackgroundLayer square = new ShapeBackgroundLayer(BackgroundShapes.Square,
-                new AnimatedColor(
-                    new RotateDouble(0, 1, 2, 0, 0, false),
-                    0,//new HalfSineDouble(0, 1, 2, 40, 2, false),
-                    0.5,
-                    new HalfSineDouble(0.1, 0.5, 2, 40, 0, false)
-                )
-            );
-            square.Scale = new HalfSineDouble(0.9, -0.14, 2, 100, 0, false);
-            square.Rotation = new RotateDouble(0, 90, 2, 100, 0, false);
-            //Backgrounds.Add(square);
-
-
-            ShapeBackgroundLayer square2 = new ShapeBackgroundLayer(BackgroundShapes.Square,
-                new AnimatedColor(
-                    0,
-                    0,//new HalfSineDouble(0, 1, 2, 40, 2, false),
-                    0.5,
-                    new ConstantDouble(0.2, 0.1, 0, false)
-                )
-            );
-            Backgrounds.Add(square2);
+            Backgrounds = new List<BackgroundLayer>();
 
             InitializeComponent();
         }
@@ -189,9 +152,9 @@ namespace PuzzleGame
             {
                 if (dot.Color == Colors.White)
                 {
-                    Color res = BackgroundColor;
+                    Color res = Color.Gray;
                     float dist = (MouseLocation - dot.Position).Norm2();
-                    res = Color.FromArgb(64 - (int)(Math.Min(3f, dist) / 3f * 64), res);
+                    res = Color.FromArgb(128 - (int)(Math.Min(3f, dist) / 3f * 128), res);
                     dot.Paint(g, res);
                 }
             }

@@ -7,12 +7,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace PuzzleGame
 {
     public partial class BackgroundEditor : UserControl
     {
+        private Grid2 grid;
+
+        public Grid2 Grid
+        {
+            get => grid;
+            set
+            {
+                grid = value;
+                if (grid != null)
+                    grid.Backgrounds = Layers;
+            }
+        }
+
         public List<BackgroundLayer> Layers { get; private set; }
+
         public BackgroundEditor()
         {
             InitializeComponent();
@@ -27,8 +42,11 @@ namespace PuzzleGame
 
         private void buttonDeleteLayer_Click(object sender, EventArgs e)
         {
-            Layers.RemoveAt(Layers.Count - 1);
-            flowLayoutPanel.Controls.RemoveAt(Layers.Count);
+            if (Layers.Count > 1)
+            {
+                Layers.RemoveAt(Layers.Count - 1);
+                flowLayoutPanel.Controls.RemoveAt(Layers.Count);
+            }
         }
     }
 }

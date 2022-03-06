@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,11 +63,35 @@
     <Compile Include="Controls\BackgroundEditor.Designer.cs">
       <DependentUpon>BackgroundEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Editor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Editor.Designer.cs">
+      <DependentUpon>Editor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\EditorForm.Designer.cs">
+      <DependentUpon>EditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FileSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FileSelector.Designer.cs">
+      <DependentUpon>FileSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ShapeLayerEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ShapeLayerEditor.Designer.cs">
       <DependentUpon>ShapeLayerEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DotEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DotEditor.Designer.cs">
+      <DependentUpon>DotEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Language\Params\AnglePropertyParam.cs" />
     <Compile Include="Language\Operator.cs" />
@@ -88,6 +113,12 @@
     </Compile>
     <Compile Include="Controls\NumericUpDownWithUnit.Designer.cs">
       <DependentUpon>NumericUpDownWithUnit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RulesEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\RulesEditor.Designer.cs">
+      <DependentUpon>RulesEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="ShapeBackgroundLayer.cs" />
     <Compile Include="Animation\SineDouble.cs" />
@@ -151,6 +182,15 @@
     <EmbeddedResource Include="Controls\BackgroundEditor.resx">
       <DependentUpon>BackgroundEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Editor.resx">
+      <DependentUpon>Editor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditorForm.resx">
+      <DependentUpon>EditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FileSelector.resx">
+      <DependentUpon>FileSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,10 +203,16 @@
     <EmbeddedResource Include="Controls\BaseLayerEditor.resx">
       <DependentUpon>BaseLayerEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DotEditor.resx">
+      <DependentUpon>DotEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RulesEditor.resx">
+      <DependentUpon>RulesEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

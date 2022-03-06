@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace PuzzleGame
 {
@@ -262,6 +263,12 @@ namespace PuzzleGame
             double res = Util.Random.NextDouble();
             randomFunctionCache[uid] = res;
             return res;
+        }
+
+        public static IEnumerable<string> GetFiles(string path)
+        {
+            if (!Directory.Exists(path)) { return Enumerable.Empty<string>(); }
+            return Directory.GetFiles(path, "*", SearchOption.AllDirectories);
         }
     }
 }

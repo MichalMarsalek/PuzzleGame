@@ -1,6 +1,6 @@
 ﻿namespace PuzzleGame
 {
-    partial class Form1
+    partial class EditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -36,18 +36,17 @@
             this.editor1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editor1.Location = new System.Drawing.Point(0, 0);
             this.editor1.Name = "editor1";
-            this.editor1.Path = "C:\\Users\\Michal\\Documents\\Puzzle game packs\\Pack 1";
-            this.editor1.Size = new System.Drawing.Size(1188, 620);
+            this.editor1.Size = new System.Drawing.Size(800, 450);
             this.editor1.TabIndex = 0;
             // 
-            // Form1
+            // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1188, 620);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.editor1);
-            this.Name = "Form1";
-            this.Text = "Puzzle game";
+            this.Name = "EditorForm";
+            this.Text = "EditorForm";
             this.ResumeLayout(false);
 
         }
@@ -57,4 +56,3 @@
         private Editor editor1;
     }
 }
-

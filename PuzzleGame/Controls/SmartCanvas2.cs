@@ -21,7 +21,7 @@ namespace PuzzleGame
         public PointF MouseLocation { get; private set; }   //Poslední známá pozice myši, ve virtuálních souřadnicích plátna
 
         private Timer timer;
-        private const int fps = 50;
+        private const int fps = 25;
 
         public SmartCanvas2()
         {
