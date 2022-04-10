@@ -136,91 +136,102 @@ namespace PuzzleGame.Language
             }
             return new Objective(rules, finalObjective);
         }
-
-        private Node ParseRule(List<Token> tokens) { //TODO include operator precedence.
+        
+        private IEnumerable<Node> GetValueOperatorSeq(List<Token> tokens)
+        {
             if (tokens.Count == 0)
             {
                 throw new Language.Exception("Parsing error, unexpected end of sentence.", null);
             }
+            bool prevIsValue = false;
             int i = 0;
-            Node prevValue = null;
-            string prevOp = null;
-            Token prevOpToken = null;
-            while (i < tokens.Count)
+            while(i < tokens.Count)
             {
-                if(tokens[i].Type == TokenTypes.Number)
+                var tok = tokens[i];
+                if (tok.Type == TokenTypes.Number)
                 {
-                    var n = new Atom(new Number(tokens[i].Content), tokens[i]);
-                    if (i == 0)
-                    {
-                        prevValue = n;
-                    }
-                    else if(prevOp is null)
+                    var n = new Atom(new Number(tok.Content), tok);
+                    if (prevIsValue)
                     {
                         throw new Language.Exception("Parsing error, unexpected number.", tokens[i]);
                     }
                     else
                     {
-                        prevValue = new Operator(prevOp, prevValue, n, prevOpToken);
-                        prevOp = null;
+                        yield return n;
+                        prevIsValue = true;
                     }
                 }
-                else if(tokens[i].Type == TokenTypes.Operator)
+                else if (tok.Type == TokenTypes.Operator)
                 {
-                    if(i == 0 || !(prevOp is null))
+                    if (!prevIsValue && tok.Content == "-")
                     {
-                        if (tokens[i].Content == "-")
-                        {
-                            tokens.Insert(i, new Token(TokenTypes.Number, tokens[i].Start, 1, "0"));
-                            continue;
-                        }
-                        if (tokens[i].Content == "√")
-                        {
-                            tokens.Insert(i, new Token(TokenTypes.Number, tokens[i].Start, 1, "2"));
-                            continue;
-                        }
-                        else
-                        {
-                            throw new Language.Exception("Parsing error, unexpected operator.", tokens[i]);
-                        }
+                        yield return new Atom(new Number(0), tok);
+                        prevIsValue = true;
+                    }
+                    else if (!prevIsValue && tok.Content == "√")
+                    {
+                        yield return new Atom(new Number(2), tok);
+                        prevIsValue = true;
+                    }
+                    if (!prevIsValue)
+                    {
+                        throw new Language.Exception("Parsing error, unexpected operator.", tok);
                     }
                     else
                     {
-                        prevOp = tokens[i].Content;
-                        prevOpToken = tokens[i];
+                        yield return new Operator(tok.Content, null, null, tok);
+                        prevIsValue = false;
                     }
                 }
-                else if(tokens[i].Type == TokenTypes.Word)
+                else if (tok.Type == TokenTypes.Word)
                 {
                     var words = new List<Token>() { tokens[i] };
                     var atStart = i == 0;
-                    while(i+1 < tokens.Count && tokens[i+1].Type == TokenTypes.Word)
+                    while (i + 1 < tokens.Count && tokens[i + 1].Type == TokenTypes.Word)
                     {
                         words.Add(tokens[i + 1]);
                         i++;
                     }
                     var q = Query.ParseQuery(words);
-                    if (atStart)
+                    if (prevIsValue)
                     {
-                        prevValue = q;
-                    }
-                    else if (prevOp is null)
-                    {
-                        throw new Language.Exception("Parsing error, unexpected query.", tokens[i]);
+                        throw new Language.Exception("Parsing error, unexpected query.", tok);
                     }
                     else
                     {
-                        prevValue = new Operator(prevOp, prevValue, q, prevOpToken);
-                        prevOp = null;
+                        yield return q;
+                        prevIsValue = true;
                     }
                 }
                 i++;
             }
-            if(!(prevOp is null))
+            if (!prevIsValue)
             {
                 throw new Language.Exception("Parsing error, unexpected end of sentence.", tokens.Last());
             }
-            return prevValue;
+        }
+
+        private Node ParsePrecedence(int prec, List<Node> seq)
+        {
+            if(seq.Count == 1)
+            {
+                return seq[0];
+            }
+            for(int i= 0; i < seq.Count; i++)
+            {
+                if(seq[i] is Operator && (seq[i] as Operator).Precedence == prec)
+                {
+                    var op = seq[i] as Operator;
+                    op.Arg1 = ParsePrecedence(prec + 1, seq.Take(i).ToList());
+                    op.Arg2 = ParsePrecedence(prec, seq.Skip(i+1).ToList());
+                    return op;
+                }
+            }
+            return ParsePrecedence(prec + 1, seq);
+        }
+        private Node ParseRule(List<Token> tokens) { //TODO include operator precedence.
+            var seq = GetValueOperatorSeq(tokens).ToList();
+            return ParsePrecedence(0, seq);
         }
     }
 }

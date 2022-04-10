@@ -9,8 +9,40 @@ namespace PuzzleGame.Language
     public class Operator : Node
     {
         public string Name { get; private set; }
-        public Node Arg1 { get; private set; }
-        public Node Arg2 { get; private set; }
+        public Node Arg1 { get; set; }
+        public Node Arg2 { get; set; }
+
+        public int Precedence
+        {
+            get
+            {
+                try
+                {
+                    return new Dictionary<string, int> {
+                        { "And", 0},
+                        { "LessThan", 1 },
+                        { "AtMost", 1 },
+                        { "GreaterThan", 1 },
+                        { "AtLeast", 1 },
+                        { "Equal", 1 },
+                        { "NotEqual", 1},
+
+                        { "Add", 2 },
+                        { "Sub", 2 },
+                        { "Mul", 3 },
+                        { "Div", 3 },
+                        { "FloorDiv", 3 },
+                        { "Mod", 3 },
+                        { "Pow", 4 },
+                        { "Root", 4 },
+                    }[Name];
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
         
         private static Dictionary<string, string> toWords = new Dictionary<string, string>() {
             { "<",  "LessThan" },
