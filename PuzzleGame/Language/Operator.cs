@@ -44,7 +44,7 @@ namespace PuzzleGame.Language
             }
         }
         
-        private static Dictionary<string, string> toWords = new Dictionary<string, string>() {
+        public static Dictionary<string, string> ToWords = new Dictionary<string, string>() {
             { "<",  "LessThan" },
             { "<=", "AtMost" },
             { "≤", "AtMost" },
@@ -66,7 +66,7 @@ namespace PuzzleGame.Language
             { "div","FloorDiv" },
             { "mod", "Mod" },
         };
-        private static Dictionary<string, string> toSymbols = new Dictionary<string, string>() {
+        public static Dictionary<string, string> ToSymbols = new Dictionary<string, string>() {
             { "LessThan", "<" },
             { "AtMost", "≤" },
             { "GreaterThan", ">" },
@@ -88,7 +88,7 @@ namespace PuzzleGame.Language
         private Dictionary<Tuple<string, Type, Type>, Type> OpData = new Dictionary<Tuple<string, Type, Type>, Type>()
         {
 
-            {Tuple.Create(".", typeof(bool), typeof(bool)), typeof(bool) },
+            {Tuple.Create("And", typeof(bool), typeof(bool)), typeof(bool) },
 
             {Tuple.Create("Add", typeof(Number), typeof(Number)), typeof(Number) },
             {Tuple.Create("Sub", typeof(Number), typeof(Number)), typeof(Number) },
@@ -167,7 +167,7 @@ namespace PuzzleGame.Language
         {
             try
             {
-                Name = toWords[op];
+                Name = ToWords[op];
                 Arg1 = arg1;
                 Arg2 = arg2;
                 Token = token;
@@ -291,11 +291,21 @@ namespace PuzzleGame.Language
 
         public override string ToCode()
         {
-            string op = toSymbols[Name];
+            string op = ToSymbols[Name];
             string arg1 = Arg1.ToCode();
             string arg2 = Arg2.ToCode();
             if (op == ".")
             {
+                if(Arg1 is Operator && (Arg1 as Operator).Precedence == 1
+                && Arg2 is Operator && (Arg2 as Operator).Precedence == 1)
+                {
+                    string arg12 = (Arg1 as Operator).Arg2.ToCode();
+                    string arg21 = (Arg2 as Operator).Arg1.ToCode();
+                    if(arg12 == arg21)
+                    {
+                        return arg1 + " " + ToSymbols[(Arg2 as Operator).Name] + " " + (Arg2 as Operator).Arg2.ToCode();
+                    }
+                }
                 return arg1 + ". " + arg2.FirstLetterToUpper();
             }
             if (op == "-" && arg1 == "0")

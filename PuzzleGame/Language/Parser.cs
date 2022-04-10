@@ -224,6 +224,15 @@ namespace PuzzleGame.Language
                     var op = seq[i] as Operator;
                     op.Arg1 = ParsePrecedence(prec + 1, seq.Take(i).ToList());
                     op.Arg2 = ParsePrecedence(prec, seq.Skip(i+1).ToList());
+                    if(op.Arg2 is Operator && (op.Arg2 as Operator).Precedence == prec && prec == 1)
+                    {
+                        op = new Operator(
+                            ".",
+                            new Operator(Operator.ToSymbols[op.Name], op.Arg1, (op.Arg2 as Operator).Arg1, op.Token),
+                            op.Arg2,
+                            null
+                            );
+                    }
                     return op;
                 }
             }
