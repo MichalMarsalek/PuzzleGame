@@ -35,6 +35,8 @@ namespace PuzzleGame
         private Vector downCanvasCoords;
         private PointF downCanvasOrigin;
 
+        public event EventHandler<MouseEventArgs> StateChanged;
+
         public Vector MouseLocation
         {
             get
@@ -240,6 +242,7 @@ namespace PuzzleGame
                     {
                         LineSegments.RemoveAll(i => i.Equals(new LineSegment(ActiveLine.Dots[len - 1], dot)));
                         ActiveLine.Dots.RemoveAt(len - 1);
+                        StateChanged?.Invoke(this, e);
                     }
                     len = ActiveLine.Dots.Count;
                     if (len > 0 && ActiveLine.Dots[len - 1] != dot)
@@ -251,6 +254,7 @@ namespace PuzzleGame
                             {
                                 ActiveLine.Dots.Add(dot);
                                 LineSegments.Add(seg);
+                                StateChanged?.Invoke(this, e);
                             }
                         }
                     }

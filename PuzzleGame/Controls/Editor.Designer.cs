@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.grid = new PuzzleGame.Grid2();
-            this.backgroundEditor = new PuzzleGame.BackgroundEditor();
-            this.rulesEditor = new PuzzleGame.RulesEditor();
-            this.dotEditor = new PuzzleGame.DotEditor();
             this.label1 = new System.Windows.Forms.Label();
             this.labelPack = new System.Windows.Forms.Label();
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.fileSelectorLevel = new PuzzleGame.FileSelector();
+            this.grid = new PuzzleGame.Grid2();
+            this.backgroundEditor = new PuzzleGame.BackgroundEditor();
+            this.rulesEditor = new PuzzleGame.RulesEditor();
+            this.dotEditor = new PuzzleGame.DotEditor();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,42 +60,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(756, 508);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // grid
-            // 
-            this.grid.BackgroundColor = System.Drawing.Color.Red;
-            this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grid.Location = new System.Drawing.Point(3, 3);
-            this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(523, 349);
-            this.grid.TabIndex = 0;
-            // 
-            // backgroundEditor
-            // 
-            this.backgroundEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.backgroundEditor.Grid = null;
-            this.backgroundEditor.Location = new System.Drawing.Point(532, 3);
-            this.backgroundEditor.Name = "backgroundEditor";
-            this.backgroundEditor.Size = new System.Drawing.Size(221, 349);
-            this.backgroundEditor.TabIndex = 1;
-            // 
-            // rulesEditor
-            // 
-            this.rulesEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rulesEditor.Grid = null;
-            this.rulesEditor.Location = new System.Drawing.Point(3, 358);
-            this.rulesEditor.Name = "rulesEditor";
-            this.rulesEditor.Size = new System.Drawing.Size(523, 147);
-            this.rulesEditor.TabIndex = 2;
-            // 
-            // dotEditor
-            // 
-            this.dotEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dotEditor.Grid = null;
-            this.dotEditor.Location = new System.Drawing.Point(532, 358);
-            this.dotEditor.Name = "dotEditor";
-            this.dotEditor.Size = new System.Drawing.Size(221, 147);
-            this.dotEditor.TabIndex = 3;
             // 
             // label1
             // 
@@ -139,6 +103,42 @@
             this.fileSelectorLevel.TabIndex = 9;
             this.fileSelectorLevel.FileSelected += new System.EventHandler(this.fileSelectorPack_FileSelected);
             this.fileSelectorLevel.FileToSave += new System.EventHandler(this.fileSelectorPack_FileToSave);
+            // 
+            // grid
+            // 
+            this.grid.BackgroundColor = System.Drawing.Color.Red;
+            this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grid.Location = new System.Drawing.Point(3, 3);
+            this.grid.Name = "grid";
+            this.grid.Size = new System.Drawing.Size(523, 349);
+            this.grid.TabIndex = 0;
+            // 
+            // backgroundEditor
+            // 
+            this.backgroundEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.backgroundEditor.Grid = null;
+            this.backgroundEditor.Location = new System.Drawing.Point(532, 3);
+            this.backgroundEditor.Name = "backgroundEditor";
+            this.backgroundEditor.Size = new System.Drawing.Size(221, 349);
+            this.backgroundEditor.TabIndex = 1;
+            // 
+            // rulesEditor
+            // 
+            this.rulesEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rulesEditor.Grid = null;
+            this.rulesEditor.Location = new System.Drawing.Point(3, 358);
+            this.rulesEditor.Name = "rulesEditor";
+            this.rulesEditor.Size = new System.Drawing.Size(523, 147);
+            this.rulesEditor.TabIndex = 2;
+            // 
+            // dotEditor
+            // 
+            this.dotEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dotEditor.Grid = null;
+            this.dotEditor.Location = new System.Drawing.Point(532, 358);
+            this.dotEditor.Name = "dotEditor";
+            this.dotEditor.Size = new System.Drawing.Size(221, 147);
+            this.dotEditor.TabIndex = 3;
             // 
             // Editor
             // 

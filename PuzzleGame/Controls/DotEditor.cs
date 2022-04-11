@@ -27,7 +27,9 @@ namespace PuzzleGame
 
         private void fileSelector_FileSelected(object sender, EventArgs e)
         {
+                
             richTextBox.Text = FileSelector.GetFileContent();
+            richTextBox.Text = richTextBox.Text; //TODO solve this better
         }
 
         private void fileSelector_FileToSave(object sender, EventArgs e)

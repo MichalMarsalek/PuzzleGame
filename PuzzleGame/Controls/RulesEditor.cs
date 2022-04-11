@@ -13,9 +13,23 @@ namespace PuzzleGame
 {
     public partial class RulesEditor : UserControl
     {
-        public Grid2 Grid { get; set; }
+        public Grid2 Grid
+        {
+            get => grid;
+            set
+            {
+                grid = value;
+                if(grid != null) grid.StateChanged += Grid_StateChanged;
+            }
+        }
+
+        private void Grid_StateChanged(object sender, MouseEventArgs e)
+        {
+            richTextBoxRules_TextChanged(sender, null);
+        }
 
         private Language.Objective objective;
+        private Grid2 grid;
 
         public RulesEditor()
         {
